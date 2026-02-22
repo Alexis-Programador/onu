@@ -3,7 +3,7 @@
 
 <head>
 <meta charset="UTF-8">
-<title>Login Inteligente</title>
+<title>Login Inteligente Seguro</title>
 
 <style>
 
@@ -238,51 +238,27 @@ elemento.style.display="none";
 },5000);
 }
 
-/* LOGIN */
-window.login=function(){
-let correo=document.getElementById("correoLogin").value;
-let pass=document.getElementById("passLogin").value;
-let avisos=document.getElementById("avisosLogin");
-let texto="";
-
-if(!correo.includes("@"))
-texto+="<div>Falta @</div>";
-else if(!correo.includes("gmail.com"))
-texto+="<div>Falta gmail.com</div>";
-if(pass.length<8)
-texto+="<div>Minimo 8 caracteres</div>";
-
-if(texto!=""){
-mostrarAviso(avisos,texto);
-return;
+// 🚀 Función para hashear contraseñas
+async function hashPassword(password){
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2,'0')).join('');
+    return hashHex;
 }
 
-let id=correo.replace(".", "_");
-
-get(child(ref(db),"usuarios/"+id))
-.then((snapshot)=>{
-if(snapshot.exists()){
-let datos=snapshot.val();
-if(datos.password==pass){
-mostrarAviso(avisos,"✔ Inicio correcto");
-setTimeout(()=>{
-window.location.href="loggin.html";
-},1000);
-}else{
-mostrarAviso(avisos,"✖ Contraseña incorrecta");
-}
-}else{
-mostrarAviso(avisos,"✖ No has creado cuenta");
-}
-});
+// 🔑 Función para generar token de sesión
+function generarToken(){
+    return crypto.randomUUID();
 }
 
 /* REGISTRO */
-window.registro=function(){
-let correo=document.getElementById("correoReg").value;
-let pass=document.getElementById("passReg").value;
-let avisos=document.getElementById("avisosReg");
-let texto="";
+window.registro = async function(){
+let correo = document.getElementById("correoReg").value;
+let pass = document.getElementById("passReg").value;
+let avisos = document.getElementById("avisosReg");
+let texto = "";
 
 if(!correo.includes("@"))
 texto+="<div>Falta @</div>";
@@ -296,17 +272,80 @@ mostrarAviso(avisos,texto);
 return;
 }
 
-let id=correo.replace(".", "_");
+let id = correo.replace(".", "_");
+let passHash = await hashPassword(pass); // ✅ hash seguro
 
+// Guardar usuario con hash y campo privado opcional
 set(ref(db,"usuarios/"+id),{
-correo:correo,
-password:pass
+correo: correo,
+password: passHash,
+privado: false
 });
 
 mostrarAviso(avisos,"✔ Cuenta creada correctamente");
+}
+
+/* LOGIN */
+window.login = async function(){
+let correo = document.getElementById("correoLogin").value;
+let pass = document.getElementById("passLogin").value;
+let avisos = document.getElementById("avisosLogin");
+let texto = "";
+
+if(!correo.includes("@"))
+texto+="<div>Falta @</div>";
+else if(!correo.includes("gmail.com"))
+texto+="<div>Falta gmail.com</div>";
+if(pass.length<8)
+texto+="<div>Minimo 8 caracteres</div>";
+
+if(texto!=""){
+mostrarAviso(avisos,texto);
+return;
+}
+
+let id = correo.replace(".", "_");
+let passHash = await hashPassword(pass);
+
+get(child(ref(db),"usuarios/"+id)).then(snapshot=>{
+    if(snapshot.exists()){
+        let datos = snapshot.val();
+        if(datos.password === passHash){
+            mostrarAviso(avisos,"✔ Inicio correcto");
+            // generar token y guardar
+            const token = generarToken();
+            localStorage.setItem("authToken", token);
+            localStorage.setItem("userId", id);
+
+            setTimeout(()=>{
+                window.location.href="loggin.html"; // ruta protegida
+            },1000);
+        } else {
+            mostrarAviso(avisos,"✖ Contraseña incorrecta");
+        }
+    } else {
+        mostrarAviso(avisos,"✖ No has creado cuenta");
+    }
+});
+}
+
+
+
+const token = localStorage.getItem('authToken');
+const userId = localStorage.getItem('userId');
+
+if(!token || !userId){
+  
+    window.location.href = "index.html";
 }
 
 </script>
 
 </body>
 </html>
+
+
+
+
+
+
