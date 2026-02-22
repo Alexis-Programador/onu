@@ -49,17 +49,17 @@ padding:25px;
 backface-visibility:hidden;
 
 box-shadow:
-0 0 10px red,
-0 0 20px red,
-0 0 40px red;
+0 0 10px #00ff00,
+0 0 20px #00ff00,
+0 0 40px #00ff00;
 
 animation:borde 3s linear infinite;
 }
 
 @keyframes borde{
-0%{box-shadow:0 0 10px red;}
-50%{box-shadow:0 0 50px red;}
-100%{box-shadow:0 0 10px red;}
+0%{box-shadow:0 0 10px #00ff00;}
+50%{box-shadow:0 0 50px #00ff00;}
+100%{box-shadow:0 0 10px #00ff00;}
 }
 
 .register{
@@ -75,7 +75,7 @@ width:95%;
 padding:12px;
 margin-top:10px;
 border-radius:8px;
-border:2px solid red;
+border:2px solid #00ff00;
 background:black;
 color:white;
 }
@@ -86,7 +86,7 @@ width:100%;
 padding:13px;
 border:none;
 border-radius:10px;
-background:linear-gradient(to right,#8B0000,#ff0000);
+background:linear-gradient(to right,#006400,#00ff00);
 color:white;
 font-size:16px;
 cursor:pointer;
@@ -133,8 +133,8 @@ width:220px;
 padding:15px;
 border-radius:10px;
 background:#111;
-border:2px solid red;
-box-shadow:0 0 10px red;
+border:2px solid #00ff00;
+box-shadow:0 0 10px #00ff00;
 font-size:14px;
 display:none;
 }
@@ -153,12 +153,9 @@ right:20px;
 
 <body>
 
-
 <input type="checkbox" id="switch">
 
-
 <div class="container">
-
 
 <label for="switch" class="sideButton left">
 <div class="arrow">◀</div>
@@ -168,9 +165,7 @@ right:20px;
 <div class="arrow">▶</div>
 </label>
 
-
 <div class="card">
-
 
 <div class="side">
 
@@ -187,7 +182,6 @@ Entrar
 </button>
 
 </div>
-
 
 <div class="side register">
 
@@ -209,16 +203,12 @@ Crear Cuenta
 
 </div>
 
-
 <div class="notify notifyLogin" id="avisosLogin"></div>
 <div class="notify notifyRegister" id="avisosReg"></div>
-
-
 
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
 import {
 getDatabase,
 ref,
@@ -226,7 +216,6 @@ set,
 get,
 child
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
 
 const firebaseConfig = {
   apiKey: "AIzaSyDSExbNQt2glE3uPIYIESbpR-WMyG2ts0M",
@@ -238,134 +227,83 @@ const firebaseConfig = {
   appId: "1:329465558346:web:0f7667ed31a03c0589fdb3"
 };
 
-
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-
-
 function mostrarAviso(elemento,texto){
-
 elemento.style.display="block";
 elemento.innerHTML=texto;
-
 setTimeout(()=>{
-
 elemento.style.display="none";
-
 },5000);
-
 }
 
-
-
 /* LOGIN */
-
 window.login=function(){
-
 let correo=document.getElementById("correoLogin").value;
 let pass=document.getElementById("passLogin").value;
 let avisos=document.getElementById("avisosLogin");
-
 let texto="";
-
 
 if(!correo.includes("@"))
 texto+="<div>Falta @</div>";
-
 else if(!correo.includes("gmail.com"))
 texto+="<div>Falta gmail.com</div>";
-
 if(pass.length<8)
 texto+="<div>Minimo 8 caracteres</div>";
-
 
 if(texto!=""){
 mostrarAviso(avisos,texto);
 return;
 }
 
-
 let id=correo.replace(".", "_");
 
-
 get(child(ref(db),"usuarios/"+id))
-
 .then((snapshot)=>{
-
 if(snapshot.exists()){
-
 let datos=snapshot.val();
-
 if(datos.password==pass){
-
 mostrarAviso(avisos,"✔ Inicio correcto");
-
-// 🔥 ABRIR INDEX
 setTimeout(()=>{
-
 window.location.href="loggin.html";
-
 },1000);
-
 }else{
-
 mostrarAviso(avisos,"✖ Contraseña incorrecta");
-
 }
-
 }else{
-
 mostrarAviso(avisos,"✖ No has creado cuenta");
-
 }
-
 });
-
 }
-
-
 
 /* REGISTRO */
-
 window.registro=function(){
-
 let correo=document.getElementById("correoReg").value;
 let pass=document.getElementById("passReg").value;
 let avisos=document.getElementById("avisosReg");
-
 let texto="";
-
 
 if(!correo.includes("@"))
 texto+="<div>Falta @</div>";
-
 else if(!correo.includes("gmail.com"))
 texto+="<div>Falta gmail.com</div>";
-
 if(pass.length<8)
 texto+="<div>Minimo 8 caracteres</div>";
-
 
 if(texto!=""){
 mostrarAviso(avisos,texto);
 return;
 }
 
-
 let id=correo.replace(".", "_");
 
-
 set(ref(db,"usuarios/"+id),{
-
 correo:correo,
 password:pass
-
 });
 
-
 mostrarAviso(avisos,"✔ Cuenta creada correctamente");
-
 }
 
 </script>
