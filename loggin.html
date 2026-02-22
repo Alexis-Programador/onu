@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sumando el Aprendizaje</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <h1>📚 Sumando el Aprendizaje</h1>
+  <p>Disciplina diaria = grandes resultados 🚀</p>
+</header>
+
+<div class="container">
+
+  <!-- IZQUIERDA -->
+  <div class="left">
+
+    <div class="card">
+      <h2>Materias del Día</h2>
+
+      <div class="progress-bar">
+        <div id="progress"></div>
+      </div>
+
+      <div class="subjects">
+        <div class="subject" data-materia="Matemáticas">Matemáticas</div>
+        <div class="subject" data-materia="Español">Español</div>
+        <div class="subject" data-materia="Inglés">Inglés</div>
+        <div class="subject" data-materia="Historia">Historia</div>
+        <div class="subject" data-materia="Programación">Programación</div>
+        <div class="subject" data-materia="Ciencias">Ciencias</div>
+        <div class="subject" data-materia="Física">Física</div>
+        <div class="subject" data-materia="Geografía">Geografía</div>
+        <div class="subject" data-materia="Arte">Arte</div>
+        <div class="subject" data-materia="Educación Física">Educación Física</div>
+      </div>
+
+      <br>
+      <button onclick="resetearMaterias()">🔄 Reiniciar Materias</button>
+    </div>
+
+  </div>
+
+  <!-- DERECHA -->
+  <div class="right">
+    <div class="card">
+      <h2>📅 Calendario</h2>
+      <div id="calendar"></div>
+    </div>
+
+   <div class="card">
+  <h2>⭐ Puntuación</h2>
+  <div class="score-box">
+    <p>Puntos actuales: <span id="points">0</span></p>
+  </div>
+  <a href="canjear.html"><button>Canjear puntos</button></a>
+</div>
+
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

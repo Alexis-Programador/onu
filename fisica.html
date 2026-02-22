@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quiz de Física</title>
+<style>
+body{font-family:Arial;margin:0;background:#f4fff6;color:#222;}
+header{background:#2e8b57;color:white;padding:20px;text-align:center;}
+.quiz-container{max-width:600px;margin:auto;padding:20px;}
+.question-card{background:white;border-radius:10px;padding:20px;margin-bottom:15px;box-shadow:0 5px 10px rgba(0,0,0,0.1);}
+.question-card h3{margin-bottom:15px;}
+.question-card button{display:block;width:100%;padding:10px;margin:5px 0;border:none;border-radius:8px;cursor:pointer;font-size:16px;}
+.question-card button:hover{background:#3fa96d;color:white;}
+#resumen{text-align:center;background:white;border-radius:10px;padding:20px;box-shadow:0 5px 10px rgba(0,0,0,0.1);margin-top:20px;}
+</style>
+</head>
+<body>
+<header>
+<h1>⚛️ Quiz de Física</h1>
+<p>Cada respuesta correcta vale 5 puntos</p>
+</header>
+<div class="quiz-container" id="quizContainer"></div>
+<div id="resumen" style="display:none;">
+<h2>✅ Quiz completado</h2>
+<p id="puntosGanados">Puntos ganados: 0</p>
+<p id="totalPuntos">Total puntos: 0</p>
+<button onclick="volver()">⬅ Volver al inicio</button>
+</div>
+<script>
+const preguntas=[
+{pregunta:"1. La velocidad de la luz es:",opciones:["300,000 km/s","150,000 km/s","3,000 km/s"],correcta:0},
+{pregunta:"2. ¿Qué es la gravedad?",opciones:["Fuerza que atrae los cuerpos","Energía","Masa"],correcta:0},
+{pregunta:"3. ¿Qué es la fuerza?",opciones:["Masa x aceleración","Energía","Velocidad"],correcta:0},
+{pregunta:"4. ¿Unidad de energía?",opciones:["Joule","Newton","Volt"],correcta:0},
+{pregunta:"5. ¿Qué es la presión?",opciones:["Fuerza/Área","Fuerza x Distancia","Masa x Velocidad"],correcta:0},
+{pregunta:"6. La ley de Newton se aplica a:",opciones:["Movimientos","Calor","Electricidad"],correcta:0},
+{pregunta:"7. ¿Qué es el magnetismo?",opciones:["Fuerza de atracción/repulsión","Gravedad","Electricidad"],correcta:0},
+{pregunta:"8. ¿Qué es la energía cinética?",opciones:["Energía de movimiento","Energía almacenada","Energía térmica"],correcta:0},
+{pregunta:"9. ¿Qué es un péndulo?",opciones:["Masa que oscila","Resorte","Circuito"],correcta:0},
+{pregunta:"10. ¿Qué estudia la óptica?",opciones:["La luz","El sonido","Los átomos"],correcta:0}
+];
+const puntosPorPregunta=5;
+let puntosGanados=0;
+let puntos=parseInt(localStorage.getItem("puntos"))||0;
+let indicePregunta=0;
+const container=document.getElementById("quizContainer");
+function mostrarPregunta(indice){
+container.innerHTML="";
+const q=preguntas[indice];
+const card=document.createElement("div");
+card.classList.add("question-card");
+const preguntaElem=document.createElement("h3");
+preguntaElem.textContent=q.pregunta;
+card.appendChild(preguntaElem);
+q.opciones.forEach((opcion,i)=>{
+const btn=document.createElement("button");
+btn.textContent=opcion;
+btn.addEventListener("click",()=>{
+if(i===q.correcta){alert("✅ Correcto +5 puntos");puntosGanados+=puntosPorPregunta;puntos+=puntosPorPregunta;localStorage.setItem("puntos",puntos);}
+else{alert("❌ Incorrecto");}
+indicePregunta++;
+if(indicePregunta<preguntas.length){mostrarPregunta(indicePregunta);}
+else{mostrarResumen();}
+});
+card.appendChild(btn);
+});
+container.appendChild(card);
+}
+function mostrarResumen(){
+container.style.display="none";
+document.getElementById("resumen").style.display="block";
+document.getElementById("puntosGanados").textContent="Puntos ganados: "+puntosGanados;
+document.getElementById("totalPuntos").textContent="Total puntos: "+puntos;
+localStorage.setItem("quizCompletado","true");
+}
+function volver(){window.location.href="loggin.html";}
+mostrarPregunta(indicePregunta);
+</script>
+</body>
+</html>
