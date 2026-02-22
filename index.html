@@ -6,7 +6,6 @@
 <title>Login Inteligente Seguro</title>
 
 <style>
-
 body{
 background:black;
 font-family:Arial;
@@ -17,16 +16,13 @@ justify-content:center;
 align-items:center;
 color:white;
 }
-
 #switch{
 display:none;
 }
-
 .container{
 perspective:1200px;
 position:relative;
 }
-
 .card{
 width:380px;
 height:420px;
@@ -34,11 +30,9 @@ position:relative;
 transform-style:preserve-3d;
 transition:1s;
 }
-
 #switch:checked ~ .container .card{
 transform:rotateY(180deg);
 }
-
 .side{
 position:absolute;
 width:100%;
@@ -47,29 +41,23 @@ border-radius:20px;
 background:black;
 padding:25px;
 backface-visibility:hidden;
-
 box-shadow:
 0 0 10px #00ff00,
 0 0 20px #00ff00,
 0 0 40px #00ff00;
-
 animation:borde 3s linear infinite;
 }
-
 @keyframes borde{
 0%{box-shadow:0 0 10px #00ff00;}
 50%{box-shadow:0 0 50px #00ff00;}
 100%{box-shadow:0 0 10px #00ff00;}
 }
-
 .register{
 transform:rotateY(180deg);
 }
-
 h2{
 text-align:center;
 }
-
 input{
 width:95%;
 padding:12px;
@@ -79,7 +67,6 @@ border:2px solid #00ff00;
 background:black;
 color:white;
 }
-
 button{
 margin-top:20px;
 width:100%;
@@ -91,7 +78,6 @@ color:white;
 font-size:16px;
 cursor:pointer;
 }
-
 .sideButton{
 position:absolute;
 top:50%;
@@ -100,7 +86,6 @@ width:80px;
 height:250px;
 cursor:pointer;
 }
-
 .arrow{
 position:absolute;
 top:50%;
@@ -110,22 +95,17 @@ font-size:40px;
 opacity:0;
 transition:0.3s;
 }
-
 .container:hover .arrow{
 opacity:1;
 }
-
 .left{ left:-110px; }
 .right{ right:-110px; }
-
 #switch:not(:checked) ~ .container .left{
 display:none;
 }
-
 #switch:checked ~ .container .right{
 display:none;
 }
-
 .notify{
 position:absolute;
 top:30%;
@@ -138,15 +118,12 @@ box-shadow:0 0 10px #00ff00;
 font-size:14px;
 display:none;
 }
-
 .notifyLogin{
 left:20px;
 }
-
 .notifyRegister{
 right:20px;
 }
-
 </style>
 
 </head>
@@ -168,39 +145,24 @@ right:20px;
 <div class="card">
 
 <div class="side">
-
 <h2>INICIAR SESIÓN</h2>
-
 Correo
 <input id="correoLogin" type="text">
-
 Contraseña
 <input id="passLogin" type="password">
-
-<button onclick="login()">
-Entrar
-</button>
-
+<button onclick="login()">Entrar</button>
 </div>
 
 <div class="side register">
-
 <h2>REGISTRO</h2>
-
 Correo
 <input id="correoReg" type="text">
-
 Contraseña
 <input id="passReg" type="password">
-
-<button onclick="registro()">
-Crear Cuenta
-</button>
-
+<button onclick="registro()">Crear Cuenta</button>
 </div>
 
 </div>
-
 </div>
 
 <div class="notify notifyLogin" id="avisosLogin"></div>
@@ -209,14 +171,9 @@ Crear Cuenta
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {
-getDatabase,
-ref,
-set,
-get,
-child
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
+// Configuración Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyDSExbNQt2glE3uPIYIESbpR-WMyG2ts0M",
   authDomain: "act23-547b9.firebaseapp.com",
@@ -230,122 +187,107 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
+// Mostrar mensajes de aviso
 function mostrarAviso(elemento,texto){
 elemento.style.display="block";
 elemento.innerHTML=texto;
-setTimeout(()=>{
-elemento.style.display="none";
-},5000);
+setTimeout(()=>{ elemento.style.display="none"; },5000);
 }
 
-// 🚀 Función para hashear contraseñas
+// Hash seguro de contraseñas
 async function hashPassword(password){
     const encoder = new TextEncoder();
     const data = encoder.encode(password);
     const hashBuffer = await crypto.subtle.digest('SHA-256', data);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashHex = hashArray.map(b => b.toString(16).padStart(2,'0')).join('');
-    return hashHex;
+    return hashArray.map(b => b.toString(16).padStart(2,'0')).join('');
 }
 
-// 🔑 Función para generar token de sesión
+// Generar token seguro
 function generarToken(){
     return crypto.randomUUID();
 }
 
-/* REGISTRO */
+// Registro con validación y hash
 window.registro = async function(){
-let correo = document.getElementById("correoReg").value;
-let pass = document.getElementById("passReg").value;
-let avisos = document.getElementById("avisosReg");
-let texto = "";
+    let correo = document.getElementById("correoReg").value.trim();
+    let pass = document.getElementById("passReg").value;
+    let avisos = document.getElementById("avisosReg");
+    let texto="";
 
-if(!correo.includes("@"))
-texto+="<div>Falta @</div>";
-else if(!correo.includes("gmail.com"))
-texto+="<div>Falta gmail.com</div>";
-if(pass.length<8)
-texto+="<div>Minimo 8 caracteres</div>";
+    // Validación de entradas
+    if(!correo.includes("@") || correo.length>50) texto+="<div>Correo inválido</div>";
+    if(!correo.includes("gmail.com")) texto+="<div>Debe ser gmail.com</div>";
+    if(pass.length<8 || pass.length>100) texto+="<div>Contraseña inválida</div>";
+    if(texto!=""){ mostrarAviso(avisos,texto); return; }
 
-if(texto!=""){
-mostrarAviso(avisos,texto);
-return;
+    const id = correo.replace(".", "_"); // sanitización para Firebase
+    const passHash = await hashPassword(pass);
+
+    set(ref(db,"usuarios/"+id),{
+        correo: correo,
+        password: passHash,
+        privado: false
+    });
+
+    mostrarAviso(avisos,"✔ Cuenta creada correctamente");
 }
 
-let id = correo.replace(".", "_");
-let passHash = await hashPassword(pass); // ✅ hash seguro
-
-// Guardar usuario con hash y campo privado opcional
-set(ref(db,"usuarios/"+id),{
-correo: correo,
-password: passHash,
-privado: false
-});
-
-mostrarAviso(avisos,"✔ Cuenta creada correctamente");
-}
-
-/* LOGIN */
+// Login seguro con validación y token
 window.login = async function(){
-let correo = document.getElementById("correoLogin").value;
-let pass = document.getElementById("passLogin").value;
-let avisos = document.getElementById("avisosLogin");
-let texto = "";
+    let correo = document.getElementById("correoLogin").value.trim();
+    let pass = document.getElementById("passLogin").value;
+    let avisos = document.getElementById("avisosLogin");
+    let texto="";
 
-if(!correo.includes("@"))
-texto+="<div>Falta @</div>";
-else if(!correo.includes("gmail.com"))
-texto+="<div>Falta gmail.com</div>";
-if(pass.length<8)
-texto+="<div>Minimo 8 caracteres</div>";
+    // Validación de entradas
+    if(!correo.includes("@") || correo.length>50) texto+="<div>Correo inválido</div>";
+    if(!correo.includes("gmail.com")) texto+="<div>Debe ser gmail.com</div>";
+    if(pass.length<8 || pass.length>100) texto+="<div>Contraseña inválida</div>";
+    if(texto!=""){ mostrarAviso(avisos,texto); return; }
 
-if(texto!=""){
-mostrarAviso(avisos,texto);
-return;
-}
+    const id = correo.replace(".", "_");
+    const passHash = await hashPassword(pass);
 
-let id = correo.replace(".", "_");
-let passHash = await hashPassword(pass);
+    get(child(ref(db),"usuarios/"+id)).then(snapshot=>{
+        if(snapshot.exists()){
+            const datos = snapshot.val();
+            if(datos.password === passHash){
+                mostrarAviso(avisos,"✔ Inicio correcto");
 
-get(child(ref(db),"usuarios/"+id)).then(snapshot=>{
-    if(snapshot.exists()){
-        let datos = snapshot.val();
-        if(datos.password === passHash){
-            mostrarAviso(avisos,"✔ Inicio correcto");
-            // generar token y guardar
-            const token = generarToken();
-            localStorage.setItem("authToken", token);
-            localStorage.setItem("userId", id);
+                // Generar token con expiración
+                const token = generarToken();
+                const expiracion = Date.now() + 30*60*1000; // 30 minutos
+                localStorage.setItem("authToken", token);
+                localStorage.setItem("userId", id);
+                localStorage.setItem("tokenExpiracion", expiracion);
 
-            setTimeout(()=>{
-                window.location.href="loggin.html"; // ruta protegida
-            },1000);
+                setTimeout(()=>{ window.location.href="loggin.html"; },1000);
+            } else {
+                mostrarAviso(avisos,"Correo o contraseña incorrecta"); // mensaje genérico
+            }
         } else {
-            mostrarAviso(avisos,"✖ Contraseña incorrecta");
+            mostrarAviso(avisos,"Correo o contraseña incorrecta");
         }
-    } else {
-        mostrarAviso(avisos,"✖ No has creado cuenta");
-    }
-});
+    });
 }
 
+// Verificar acceso a rutas protegidas
+export function verificarAcceso(){
+    const token = localStorage.getItem("authToken");
+    const userId = localStorage.getItem("userId");
+    const expiracion = localStorage.getItem("tokenExpiracion");
 
-
-const token = localStorage.getItem('authToken');
-const userId = localStorage.getItem('userId');
-
-if(!token || !userId){
-  
-    window.location.href = "index.html";
+    if(!token || !userId || !expiracion || Date.now() > parseInt(expiracion)){
+        // Limpiar sesión
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("userId");
+        localStorage.removeItem("tokenExpiracion");
+        window.location.href = "index.html";
+    }
 }
 
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
