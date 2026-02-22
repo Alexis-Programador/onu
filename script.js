@@ -44,7 +44,7 @@ subjects.forEach((subject, index) => {
             case "física": htmlDestino = "fisica.html"; break;
             case "geografía": htmlDestino = "geografia.html"; break;
             case "arte": htmlDestino = "arte.html"; break;
-            case "educación física": htmlDestino = "educacion_fisica.html"; break;
+            case "educación física": htmlDestino = "educacionfisica.html"; break;
             default: htmlDestino = "materias.html"; break;
         }
 
@@ -198,4 +198,5 @@ function cambiarPuntos() {
             alert("Ingresa un número válido");
         }
     }
+
 }
