@@ -171,7 +171,7 @@ Contraseña
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import { getDatabase, ref, set, get, child, query, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 // Configuración Firebase
 const firebaseConfig = {
@@ -189,9 +189,9 @@ const db = getDatabase(app);
 
 // Mostrar mensajes de aviso
 function mostrarAviso(elemento,texto){
-elemento.style.display="block";
-elemento.innerHTML=texto;
-setTimeout(()=>{ elemento.style.display="none"; },5000);
+    elemento.style.display="block";
+    elemento.innerHTML=texto;
+    setTimeout(()=>{ elemento.style.display="none"; },5000);
 }
 
 // Hash seguro de contraseñas
@@ -208,23 +208,33 @@ function generarToken(){
     return crypto.randomUUID();
 }
 
-// Registro con validación y hash
+// Registro con ID incremental
 window.registro = async function(){
     let correo = document.getElementById("correoReg").value.trim();
     let pass = document.getElementById("passReg").value;
     let avisos = document.getElementById("avisosReg");
     let texto="";
 
-    // Validación de entradas
+    // Validación
     if(!correo.includes("@") || correo.length>50) texto+="<div>Correo inválido</div>";
     if(!correo.includes("gmail.com")) texto+="<div>Debe ser gmail.com</div>";
     if(pass.length<8 || pass.length>100) texto+="<div>Contraseña inválida</div>";
     if(texto!=""){ mostrarAviso(avisos,texto); return; }
 
-    const id = correo.replace(".", "_"); // sanitización para Firebase
+    // Obtener nuevo ID incremental
+    const usuariosRef = ref(db, "usuarios");
+    const snapshot = await get(usuariosRef);
+    let newId = 1;
+    if(snapshot.exists()){
+        const datos = snapshot.val();
+        const ids = Object.values(datos).map(u => parseInt(u.uid)).filter(n => !isNaN(n));
+        if(ids.length>0) newId = Math.max(...ids) + 1;
+    }
+
     const passHash = await hashPassword(pass);
 
-    set(ref(db,"usuarios/"+id),{
+    set(ref(db,"usuarios/user_" + newId),{
+        uid: newId,
         correo: correo,
         password: passHash,
         privado: false
@@ -233,43 +243,48 @@ window.registro = async function(){
     mostrarAviso(avisos,"✔ Cuenta creada correctamente");
 }
 
-// Login seguro con validación y token
+// Login seguro con búsqueda por correo
 window.login = async function(){
     let correo = document.getElementById("correoLogin").value.trim();
     let pass = document.getElementById("passLogin").value;
     let avisos = document.getElementById("avisosLogin");
     let texto="";
 
-    // Validación de entradas
     if(!correo.includes("@") || correo.length>50) texto+="<div>Correo inválido</div>";
     if(!correo.includes("gmail.com")) texto+="<div>Debe ser gmail.com</div>";
     if(pass.length<8 || pass.length>100) texto+="<div>Contraseña inválida</div>";
     if(texto!=""){ mostrarAviso(avisos,texto); return; }
 
-    const id = correo.replace(".", "_");
     const passHash = await hashPassword(pass);
 
-    get(child(ref(db),"usuarios/"+id)).then(snapshot=>{
-        if(snapshot.exists()){
-            const datos = snapshot.val();
-            if(datos.password === passHash){
-                mostrarAviso(avisos,"✔ Inicio correcto");
-
-                // Generar token con expiración
-                const token = generarToken();
-                const expiracion = Date.now() + 30*60*1000; // 30 minutos
-                localStorage.setItem("authToken", token);
-                localStorage.setItem("userId", id);
-                localStorage.setItem("tokenExpiracion", expiracion);
-
-                setTimeout(()=>{ window.location.href="loggin.html"; },1000);
-            } else {
-                mostrarAviso(avisos,"Correo o contraseña incorrecta"); // mensaje genérico
+    // Buscar usuario por correo
+    const usuariosRef = ref(db,"usuarios");
+    const usuariosSnapshot = await get(usuariosRef);
+    if(usuariosSnapshot.exists()){
+        const datos = usuariosSnapshot.val();
+        let usuarioEncontrado = null;
+        for(let key in datos){
+            if(datos[key].correo === correo){
+                usuarioEncontrado = datos[key];
+                break;
             }
+        }
+        if(usuarioEncontrado && usuarioEncontrado.password === passHash){
+            mostrarAviso(avisos,"✔ Inicio correcto");
+
+            const token = generarToken();
+            const expiracion = Date.now() + 30*60*1000; // 30 min
+            localStorage.setItem("authToken", token);
+            localStorage.setItem("userId", usuarioEncontrado.uid);
+            localStorage.setItem("tokenExpiracion", expiracion);
+
+            setTimeout(()=>{ window.location.href="loggin.html"; },1000);
         } else {
             mostrarAviso(avisos,"Correo o contraseña incorrecta");
         }
-    });
+    } else {
+        mostrarAviso(avisos,"Correo o contraseña incorrecta");
+    }
 }
 
 // Verificar acceso a rutas protegidas
@@ -279,7 +294,6 @@ export function verificarAcceso(){
     const expiracion = localStorage.getItem("tokenExpiracion");
 
     if(!token || !userId || !expiracion || Date.now() > parseInt(expiracion)){
-        // Limpiar sesión
         localStorage.removeItem("authToken");
         localStorage.removeItem("userId");
         localStorage.removeItem("tokenExpiracion");
