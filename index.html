@@ -3,26 +3,30 @@
 
 <head>
 <meta charset="UTF-8">
-<title>Login Inteligente Seguro</title>
+<title>Login Inteligente</title>
 
 <style>
+
 body{
-background:black;
+background:rgb(255, 255, 255);
 font-family:Arial;
 margin:0;
 height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-color:white;
+color:rgb(104, 175, 126);
 }
+
 #switch{
 display:none;
 }
+
 .container{
 perspective:1200px;
 position:relative;
 }
+
 .card{
 width:380px;
 height:420px;
@@ -30,54 +34,64 @@ position:relative;
 transform-style:preserve-3d;
 transition:1s;
 }
+
 #switch:checked ~ .container .card{
 transform:rotateY(180deg);
 }
+
 .side{
 position:absolute;
 width:100%;
 height:100%;
 border-radius:20px;
-background:black;
+background:rgb(255, 255, 255);
 padding:25px;
 backface-visibility:hidden;
+
 box-shadow:
-0 0 10px #00ff00,
-0 0 20px #00ff00,
-0 0 40px #00ff00;
+0 0 10px rgb(141, 194, 136),
+0 0 20px rgb(21, 255, 0),
+0 0 40px rgb(21, 255, 0);
+
 animation:borde 3s linear infinite;
 }
+
 @keyframes borde{
-0%{box-shadow:0 0 10px #00ff00;}
-50%{box-shadow:0 0 50px #00ff00;}
-100%{box-shadow:0 0 10px #00ff00;}
+0%{box-shadow:0 0 10px rgb(21, 126, 12);}
+50%{box-shadow:0 0 50px rgb(21, 255, 0);}
+100%{box-shadow:0 0 10px rgb(21, 255, 0);}
 }
+
 .register{
 transform:rotateY(180deg);
 }
+
 h2{
 text-align:center;
 }
+
 input{
 width:95%;
 padding:12px;
 margin-top:10px;
 border-radius:8px;
-border:2px solid #00ff00;
-background:black;
-color:white;
+border:2px solid rgb(21, 255, 0);
+background:rgb(240, 255, 242);
+color:rgb(81, 255, 0);
 }
+
 button{
 margin-top:20px;
 width:100%;
 padding:13px;
 border:none;
 border-radius:10px;
-background:linear-gradient(to right,#006400,#00ff00);
-color:white;
+background:linear-gradient(to right,#39ff02,#88ff00);
+color:rgb(255, 255, 255);
 font-size:16px;
 cursor:pointer;
 }
+
 .sideButton{
 position:absolute;
 top:50%;
@@ -86,6 +100,7 @@ width:80px;
 height:250px;
 cursor:pointer;
 }
+
 .arrow{
 position:absolute;
 top:50%;
@@ -95,44 +110,55 @@ font-size:40px;
 opacity:0;
 transition:0.3s;
 }
+
 .container:hover .arrow{
 opacity:1;
 }
+
 .left{ left:-110px; }
 .right{ right:-110px; }
+
 #switch:not(:checked) ~ .container .left{
 display:none;
 }
+
 #switch:checked ~ .container .right{
 display:none;
 }
+
 .notify{
 position:absolute;
 top:30%;
 width:220px;
 padding:15px;
 border-radius:10px;
-background:#111;
-border:2px solid #00ff00;
-box-shadow:0 0 10px #00ff00;
+background:#ffffff;
+border:2px solid rgba(21, 255, 0);
+box-shadow:0 0 10px rgb(21, 255, 0);
 font-size:14px;
 display:none;
 }
+
 .notifyLogin{
 left:20px;
 }
+
 .notifyRegister{
 right:20px;
 }
+
 </style>
 
 </head>
 
 <body>
 
+
 <input type="checkbox" id="switch">
 
+
 <div class="container">
+
 
 <label for="switch" class="sideButton left">
 <div class="arrow">◀</div>
@@ -142,38 +168,62 @@ right:20px;
 <div class="arrow">▶</div>
 </label>
 
+
 <div class="card">
 
+
 <div class="side">
+
 <h2>INICIAR SESIÓN</h2>
+
 Correo
 <input id="correoLogin" type="text">
+
 Contraseña
 <input id="passLogin" type="password">
-<button onclick="login()">Entrar</button>
+
+<button onclick="login()">
+Entrar
+</button>
+
 </div>
+
 
 <div class="side register">
+
 <h2>REGISTRO</h2>
+
 Correo
 <input id="correoReg" type="text">
+
 Contraseña
 <input id="passReg" type="password">
-<button onclick="registro()">Crear Cuenta</button>
+
+<button onclick="registro()">
+Crear Cuenta
+</button>
+
 </div>
 
 </div>
+
 </div>
+
 
 <div class="notify notifyLogin" id="avisosLogin"></div>
 <div class="notify notifyRegister" id="avisosReg"></div>
 
+
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getDatabase, ref, set, get, child, query, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import {
+getDatabase,
+ref,
+set,
+get
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-// Configuración Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyDSExbNQt2glE3uPIYIESbpR-WMyG2ts0M",
   authDomain: "act23-547b9.firebaseapp.com",
@@ -187,121 +237,150 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// Mostrar mensajes de aviso
+/* Mostrar avisos */
 function mostrarAviso(elemento,texto){
     elemento.style.display="block";
     elemento.innerHTML=texto;
-    setTimeout(()=>{ elemento.style.display="none"; },5000);
+    setTimeout(()=>{ elemento.style.display="none"; },4000);
 }
 
-// Hash seguro de contraseñas
+/* Validar correo */
+function validarCorreo(correo){
+    const regex=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(correo);
+}
+
+/* Hash seguro */
 async function hashPassword(password){
-    const encoder = new TextEncoder();
-    const data = encoder.encode(password);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map(b => b.toString(16).padStart(2,'0')).join('');
+    const encoder=new TextEncoder();
+    const data=encoder.encode(password);
+    const hashBuffer=await crypto.subtle.digest("SHA-256",data);
+    return Array.from(new Uint8Array(hashBuffer))
+    .map(b=>b.toString(16).padStart(2,"0")).join("");
 }
 
-// Generar token seguro
-function generarToken(){
-    return crypto.randomUUID();
-}
-
-// Registro con ID incremental
+/* REGISTRO */
 window.registro = async function(){
+
     let correo = document.getElementById("correoReg").value.trim();
     let pass = document.getElementById("passReg").value;
     let avisos = document.getElementById("avisosReg");
-    let texto="";
+    let texto = "";
 
-    // Validación
-    if(!correo.includes("@") || correo.length>50) texto+="<div>Correo inválido</div>";
-    if(!correo.includes("gmail.com")) texto+="<div>Debe ser gmail.com</div>";
-    if(pass.length<8 || pass.length>100) texto+="<div>Contraseña inválida</div>";
-    if(texto!=""){ mostrarAviso(avisos,texto); return; }
-
-    // Obtener nuevo ID incremental
-    const usuariosRef = ref(db, "usuarios");
-    const snapshot = await get(usuariosRef);
-    let newId = 1;
-    if(snapshot.exists()){
-        const datos = snapshot.val();
-        const ids = Object.values(datos).map(u => parseInt(u.uid)).filter(n => !isNaN(n));
-        if(ids.length>0) newId = Math.max(...ids) + 1;
+    // Validar correo vacío
+    if(correo === ""){
+        texto += "<div>Debe escribir un correo</div>";
     }
 
-    const passHash = await hashPassword(pass);
+    // Detectar @
+    if(!correo.includes("@")){
+        texto += "<div>Falta el símbolo @</div>";
+    }
 
-    set(ref(db,"usuarios/user_" + newId),{
-        uid: newId,
-        correo: correo,
-        password: passHash,
-        privado: false
+    // Detectar gmail.com
+    if(!correo.endsWith("gmail.com")){
+        texto += "<div>Debe contener gmail.com</div>";
+    }
+
+    // Validar contraseña vacía
+    if(pass === ""){
+        texto += "<div>Debe escribir una contraseña</div>";
+    }
+
+    // Longitud mínima
+    if(pass !== "" && pass.length < 8){
+        texto += "<div>Mínimo 8 caracteres</div>";
+    }
+
+    if(texto !== ""){
+        mostrarAviso(avisos,texto);
+        return;
+    }
+
+    const usuariosRef = ref(db,"usuarios");
+    const snapshot = await get(usuariosRef);
+    let datos = snapshot.exists()? snapshot.val() : {};
+
+    // Verificar duplicado
+    for(let key in datos){
+        if(datos[key].correo === correo){
+            mostrarAviso(avisos,"✖ Correo ya registrado");
+            return;
+        }
+    }
+
+    let newId = Object.keys(datos).length + 1;
+    let passHash = await hashPassword(pass);
+
+    await set(ref(db,"usuarios/user_"+newId),{
+        uid:newId,
+        correo:correo,
+        password:passHash
     });
 
     mostrarAviso(avisos,"✔ Cuenta creada correctamente");
 }
 
-// Login seguro con búsqueda por correo
-window.login = async function(){
+/* LOGIN */window.login = async function(){
+
     let correo = document.getElementById("correoLogin").value.trim();
     let pass = document.getElementById("passLogin").value;
     let avisos = document.getElementById("avisosLogin");
-    let texto="";
+    let texto = "";
 
-    if(!correo.includes("@") || correo.length>50) texto+="<div>Correo inválido</div>";
-    if(!correo.includes("gmail.com")) texto+="<div>Debe ser gmail.com</div>";
-    if(pass.length<8 || pass.length>100) texto+="<div>Contraseña inválida</div>";
-    if(texto!=""){ mostrarAviso(avisos,texto); return; }
+    if(correo === ""){
+        texto += "<div>Debe escribir un correo</div>";
+    }
 
-    const passHash = await hashPassword(pass);
+    if(!correo.includes("@")){
+        texto += "<div>Falta el símbolo @</div>";
+    }
 
-    // Buscar usuario por correo
-    const usuariosRef = ref(db,"usuarios");
-    const usuariosSnapshot = await get(usuariosRef);
-    if(usuariosSnapshot.exists()){
-        const datos = usuariosSnapshot.val();
-        let usuarioEncontrado = null;
-        for(let key in datos){
-            if(datos[key].correo === correo){
-                usuarioEncontrado = datos[key];
-                break;
-            }
+    if(!correo.endsWith("gmail.com")){
+        texto += "<div>Debe contener gmail.com</div>";
+    }
+
+    if(pass === ""){
+        texto += "<div>Debe escribir una contraseña</div>";
+    }
+
+    if(pass !== "" && pass.length < 8){
+        texto += "<div>Contraseña inválida</div>";
+    }
+
+    if(texto !== ""){
+        mostrarAviso(avisos,texto);
+        return;
+    }
+
+    const snapshot = await get(ref(db,"usuarios"));
+
+    if(!snapshot.exists()){
+        mostrarAviso(avisos,"✖ No hay usuarios registrados");
+        return;
+    }
+
+    let datos = snapshot.val();
+    let usuario = null;
+
+    for(let key in datos){
+        if(datos[key].correo === correo){
+            usuario = datos[key];
+            break;
         }
-        if(usuarioEncontrado && usuarioEncontrado.password === passHash){
-            mostrarAviso(avisos,"✔ Inicio correcto");
+    }
 
-            const token = generarToken();
-            const expiracion = Date.now() + 30*60*1000; // 30 min
-            localStorage.setItem("authToken", token);
-            localStorage.setItem("userId", usuarioEncontrado.uid);
-            localStorage.setItem("tokenExpiracion", expiracion);
+    if(!usuario){
+        mostrarAviso(avisos,"✖ Usuario no encontrado");
+        return;
+    }
 
-            setTimeout(()=>{ window.location.href="loggin.html"; },1000);
-        } else {
-            mostrarAviso(avisos,"Correo o contraseña incorrecta");
-        }
-    } else {
-        mostrarAviso(avisos,"Correo o contraseña incorrecta");
+    let passHash = await hashPassword(pass);
+
+    if(usuario.password === passHash){
+        mostrarAviso(avisos,"✔ Inicio correcto");
+    }else{
+        mostrarAviso(avisos,"✖ Contraseña incorrecta");
     }
 }
-
-// Verificar acceso a rutas protegidas
-export function verificarAcceso(){
-    const token = localStorage.getItem("authToken");
-    const userId = localStorage.getItem("userId");
-    const expiracion = localStorage.getItem("tokenExpiracion");
-
-    if(!token || !userId || !expiracion || Date.now() > parseInt(expiracion)){
-        localStorage.removeItem("authToken");
-        localStorage.removeItem("userId");
-        localStorage.removeItem("tokenExpiracion");
-        window.location.href = "index.html";
-    }
-}
-
 </script>
-
-</body>
-</html>
