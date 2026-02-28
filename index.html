@@ -377,10 +377,21 @@ window.registro = async function(){
 
     let passHash = await hashPassword(pass);
 
-    if(usuario.password === passHash){
+  if(usuario.password === passHash){
+
         mostrarAviso(avisos,"✔ Inicio correcto");
+
+        // 🔥 Guardar sesión básica
+        localStorage.setItem("usuario", usuario.correo);
+
+        // 🔥 Redireccionar a login.html
+        setTimeout(()=>{
+            window.location.href = "logGin.html";
+        },1000);
+
     }else{
         mostrarAviso(avisos,"✖ Contraseña incorrecta");
     }
 }
 </script>
+
