@@ -1,3 +1,7 @@
+let puntos = 0;
+let completedToday = [];
+let currentDay, month, year, todayKey;
+
 document.addEventListener("DOMContentLoaded", () => {
 
     const subjects = document.querySelectorAll(".subject");
@@ -5,27 +9,27 @@ document.addEventListener("DOMContentLoaded", () => {
     const progressBar = document.getElementById("progress");
     const pointsElement = document.getElementById("points");
 
-    /* --------- PUNTOS --------- */
-    let puntos = parseInt(localStorage.getItem("puntos")) || 0;
+    /* ========= PUNTOS ========= */
+    puntos = parseInt(localStorage.getItem("puntos")) || 0;
     pointsElement.textContent = puntos;
 
-    /* --------- FECHA --------- */
+    /* ========= FECHA ========= */
     const today = new Date();
-    let currentDay = today.getDate();
-    const month = today.getMonth();
-    const year = today.getFullYear();
-    const todayKey = `day-${year}-${month}-${currentDay}`;
+    currentDay = today.getDate();
+    month = today.getMonth();
+    year = today.getFullYear();
+    todayKey = `day-${year}-${month}-${currentDay}`;
 
-    /* --------- MATERIAS HECHAS --------- */
-    let completedToday = JSON.parse(localStorage.getItem("todaySubjects")) || [];
+    /* ========= MATERIAS HECHAS ========= */
+    completedToday = JSON.parse(localStorage.getItem("todaySubjects")) || [];
 
-    /* --------- BLOQUEAR MATERIA --------- */
+    /* ========= BLOQUEAR MATERIA ========= */
     function bloquearMateria(subject) {
         subject.style.pointerEvents = "none";
         subject.style.opacity = "0.6";
     }
 
-    /* --------- CLICK MATERIAS --------- */
+    /* ========= CLICK MATERIAS ========= */
     subjects.forEach((subject, index) => {
 
         if (completedToday.includes(index)) bloquearMateria(subject);
@@ -50,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 case "física": htmlDestino = "fisica.html"; break;
                 case "geografía": htmlDestino = "geografia.html"; break;
                 case "arte": htmlDestino = "arte.html"; break;
-                case "educaciónfísica": htmlDestino = "educacionfisica.html"; break;
+                case "educación física": htmlDestino = "educacionfisica.html"; break;
                 default: htmlDestino = "materias.html"; break;
             }
 
@@ -58,54 +62,22 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    /* --------- PROGRESO --------- */
-    function actualizarProgresoMaterias() {
-        const hechas = completedToday.length;
-        const total = subjects.length;
-        const porcentaje = (hechas / total) * 100;
+    /* ========= PROGRESO ========= */
+    function actualizarProgreso() {
+        const porcentaje = (completedToday.length / subjects.length) * 100;
         progressBar.style.width = porcentaje + "%";
-        actualizarColorDiaActual();
     }
 
-    /* --------- COLOR DIA --------- */
-    function actualizarColorDiaActual() {
-        const hechas = completedToday.length;
-        const dayDivs = document.querySelectorAll(".day");
-
-        dayDivs.forEach(day => {
-            if (parseInt(day.textContent) === currentDay) {
-                day.classList.remove("red", "yellow", "green");
-
-                if (hechas >= 9) day.classList.add("green");
-                else if (hechas >= 3) day.classList.add("yellow");
-                else if (hechas >= 1) day.classList.add("red");
-            }
-        });
-    }
-
-    /* --------- GUARDAR DIA --------- */
-    function evaluarDia() {
-        if (localStorage.getItem(todayKey)) return;
-
-        const hechas = completedToday.length;
-        let estado = "red";
-
-        if (hechas >= 9) estado = "green";
-        else if (hechas >= 3) estado = "yellow";
-
-        localStorage.setItem(todayKey, estado);
-        localStorage.removeItem("todaySubjects");
-    }
-
-    /* --------- CALENDARIO --------- */
+    /* ========= CALENDARIO ========= */
     function generarCalendario() {
-        calendar.innerHTML = "";
-        const diasSemana = ["L", "M", "M", "J", "V", "S", "D"];
 
-        diasSemana.forEach(dia => {
+        calendar.innerHTML = "";
+        const diasSemana = ["L","M","M","J","V","S","D"];
+
+        diasSemana.forEach(d => {
             const div = document.createElement("div");
             div.classList.add("diaTitulo");
-            div.textContent = dia;
+            div.textContent = d;
             calendar.appendChild(div);
         });
 
@@ -113,36 +85,27 @@ document.addEventListener("DOMContentLoaded", () => {
         const diasMes = new Date(year, month + 1, 0).getDate();
         let espacios = primerDia === 0 ? 6 : primerDia - 1;
 
-        for (let i = 0; i < espacios; i++) {
+        for(let i=0;i<espacios;i++){
             calendar.appendChild(document.createElement("div"));
         }
 
-        for (let i = 1; i <= diasMes; i++) {
+        for(let i=1;i<=diasMes;i++){
             const dayDiv = document.createElement("div");
             dayDiv.classList.add("day");
             dayDiv.textContent = i;
 
-            if (i === currentDay) dayDiv.classList.add("today");
-
-            const key = `day-${year}-${month}-${i}`;
-            const estado = localStorage.getItem(key);
-
-            if (estado) dayDiv.classList.add(estado);
+            if(i === currentDay) dayDiv.classList.add("today");
 
             calendar.appendChild(dayDiv);
         }
-
-        actualizarColorDiaActual();
     }
 
-    /* --------- QUIZ COMPLETADO --------- */
-    const quizCompletado = localStorage.getItem("quizCompletado");
-
-    if (quizCompletado === "true") {
+    /* ========= QUIZ COMPLETADO ========= */
+    if(localStorage.getItem("quizCompletado") === "true"){
 
         const index = parseInt(localStorage.getItem("materiaIndex"));
 
-        if (!isNaN(index) && !completedToday.includes(index)) {
+        if(!isNaN(index) && !completedToday.includes(index)){
 
             completedToday.push(index);
             localStorage.setItem("todaySubjects", JSON.stringify(completedToday));
@@ -151,52 +114,29 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("puntos", puntos);
             pointsElement.textContent = puntos;
 
-            guardarPuntosEnServidor(puntos);
-            actualizarProgresoMaterias();
+            actualizarProgreso();
         }
 
         localStorage.removeItem("quizCompletado");
     }
 
-    /* --------- BACKEND --------- */
-    function guardarPuntosEnServidor(puntos) {
-        fetch("http://localhost:3000/guardar", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ puntos })
-        })
-        .then(res => res.json())
-        .then(data => console.log(data.mensaje))
-        .catch(error => console.log("Error:", error));
-    }
-
-    async function obtenerPuntosDelServidor() {
-        try {
-            const respuesta = await fetch("http://localhost:3000/puntos");
-            const data = await respuesta.json();
-
-            puntos = data.puntos;
-            localStorage.setItem("puntos", puntos);
-            pointsElement.textContent = puntos;
-
-        } catch (error) {
-            console.log("Error al obtener puntos:", error);
-        }
-    }
-
-    obtenerPuntosDelServidor();
-
-    /* --------- CAMBIO DIA AUTOMATICO --------- */
-    setInterval(() => {
-        const now = new Date();
-        if (now.getDate() !== currentDay) {
-            evaluarDia();
-            location.reload();
-        }
-    }, 60000);
-
-    /* --------- INICIAR --------- */
     generarCalendario();
-    actualizarProgresoMaterias();
-
+    actualizarProgreso();
 });
+
+
+/* ========= FUNCIONES GLOBALES ========= */
+
+function resetearMaterias(){
+    if(confirm("¿Reiniciar materias del día?")){
+        localStorage.removeItem("todaySubjects");
+        location.reload();
+    }
+}
+
+function resetearTodo(){
+    if(confirm("¿Borrar TODO el progreso?")){
+        localStorage.clear();
+        location.reload();
+    }
+}
