@@ -11,7 +11,13 @@
 <header>
   <h1>📚 Sumando el Aprendizaje</h1>
   <p>Disciplina diaria = grandes resultados 🚀</p>
-  async function obtenerFrase() {
+
+</header>
+
+<div class="container">
+
+<script>
+async function obtenerFrase() {
   try {
     const respuesta = await fetch("https://dummyjson.com/quotes/random");
     const data = await respuesta.json();
@@ -26,10 +32,8 @@
 }
 
 obtenerFrase();
-</header>
-
-<div class="container">
-
+</script>
+  
   <!-- IZQUIERDA -->
   <div class="left">
 
@@ -81,6 +85,7 @@ obtenerFrase();
 <script src="script.js"></script>
 </body>
 </html>
+
 
 
 
