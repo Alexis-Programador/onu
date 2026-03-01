@@ -11,10 +11,21 @@
 <header>
   <h1>📚 Sumando el Aprendizaje</h1>
   <p>Disciplina diaria = grandes resultados 🚀</p>
-
+<p id="frase">Cargando frase...</p>
 </header>
 
 <div class="container">
+
+  <!-- IZQUIERDA -->
+  <div class="left">
+
+    <div class="card">
+      <h2>Materias del Día</h2>
+
+      <div class="progress-bar">
+        <div id="progress"></div>
+      </div>
+
 
 <script>
 async function obtenerFrase() {
@@ -34,16 +45,7 @@ async function obtenerFrase() {
 obtenerFrase();
 </script>
   
-  <!-- IZQUIERDA -->
-  <div class="left">
-
-    <div class="card">
-      <h2>Materias del Día</h2>
-
-      <div class="progress-bar">
-        <div id="progress"></div>
-      </div>
-
+      
       <div class="subjects">
         <div class="subject" data-materia="Matemáticas">Matemáticas</div>
         <div class="subject" data-materia="Español">Español</div>
@@ -85,6 +87,7 @@ obtenerFrase();
 <script src="script.js"></script>
 </body>
 </html>
+
 
 
 
