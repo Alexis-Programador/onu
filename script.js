@@ -186,6 +186,39 @@ if (quizCompletado) {
 let puntos = parseInt(localStorage.getItem("puntos")) || 0;
 document.getElementById("points").textContent = puntos;
 
+/* --------- CONEXIÓN BACKEND --------- */
+
+// Enviar puntos al servidor
+function guardarPuntosEnServidor(puntos) {
+    fetch("http://localhost:3000/guardar", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ puntos: puntos })
+    })
+    .then(res => res.json())
+    .then(data => console.log(data.mensaje))
+    .catch(error => console.log("Error al guardar:", error));
+}
+
+// Obtener puntos del servidor al iniciar
+async function obtenerPuntosDelServidor() {
+    try {
+        const respuesta = await fetch("http://localhost:3000/puntos");
+        const data = await respuesta.json();
+
+        puntos = data.puntos;
+        localStorage.setItem("puntos", puntos);
+        document.getElementById("points").textContent = puntos;
+
+    } catch (error) {
+        console.log("Error al obtener puntos:", error);
+    }
+}
+
+obtenerPuntosDelServidor();
+
 function cambiarPuntos() {
     let nuevo = prompt("Ingresa la nueva cantidad de puntos:", puntos);
     if (nuevo !== null) {
@@ -194,10 +227,13 @@ function cambiarPuntos() {
             puntos = nuevo;
             localStorage.setItem("puntos", puntos);
             document.getElementById("points").textContent = puntos;
+            
+            guardarPuntosEnServidor(puntos); // 👈 ESTA LÍNEA ES LA NUEVA
+
         } else {
             alert("Ingresa un número válido");
         }
     }
-
 }
+
 
