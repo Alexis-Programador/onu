@@ -11,6 +11,21 @@
 <header>
   <h1>📚 Sumando el Aprendizaje</h1>
   <p>Disciplina diaria = grandes resultados 🚀</p>
+  async function obtenerFrase() {
+  try {
+    const respuesta = await fetch("https://dummyjson.com/quotes/random");
+    const data = await respuesta.json();
+
+    document.getElementById("frase").textContent =
+      "💡 " + data.quote + " — " + data.author;
+
+  } catch(error) {
+    document.getElementById("frase").textContent =
+      "No se pudo cargar la frase.";
+  }
+}
+
+obtenerFrase();
 </header>
 
 <div class="container">
@@ -66,5 +81,6 @@
 <script src="script.js"></script>
 </body>
 </html>
+
 
 
