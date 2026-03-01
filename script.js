@@ -164,34 +164,42 @@ setInterval(() => {
     }
 }, 60000);
 
-/* --------- INICIAR --------- */
-generarCalendario();
-actualizarProgresoMaterias();
+
+
+/* --------- PUNTOS --------- */
+let puntos = parseInt(localStorage.getItem("puntos")) || 0;
+document.getElementById("points").textContent = puntos;
+
 
 /* --------- QUIZ COMPLETADO --------- */
 const quizCompletado = localStorage.getItem("quizCompletado");
 
-if (quizCompletado) {
+if (quizCompletado === "true") {
+
     const index = parseInt(localStorage.getItem("materiaIndex"));
 
-    if (!completedToday.includes(index)) {
+    if (!isNaN(index) && !completedToday.includes(index)) {
+
         completedToday.push(index);
         localStorage.setItem("todaySubjects", JSON.stringify(completedToday));
 
-        // 🔥 SUMAR 10 PUNTOS POR QUIZ
+        // 🔥 SUMAR 10 PUNTOS
         puntos += 10;
         localStorage.setItem("puntos", puntos);
         document.getElementById("points").textContent = puntos;
 
-        guardarPuntosEnServidor(puntos); // enviar al backend
+        guardarPuntosEnServidor(puntos);
+
+        actualizarProgresoMaterias();
     }
 
     localStorage.removeItem("quizCompletado");
 }
 
-/* --------- PUNTOS --------- */
-let puntos = parseInt(localStorage.getItem("puntos")) || 0;
-document.getElementById("points").textContent = puntos;
+/* --------- INICIAR --------- */
+generarCalendario();
+actualizarProgresoMaterias();
+
 
 /* --------- CONEXIÓN BACKEND --------- */
 
@@ -242,6 +250,7 @@ function cambiarPuntos() {
         }
     }
 }
+
 
 
 
