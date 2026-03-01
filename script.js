@@ -177,6 +177,13 @@ if (quizCompletado) {
     if (!completedToday.includes(index)) {
         completedToday.push(index);
         localStorage.setItem("todaySubjects", JSON.stringify(completedToday));
+
+        // 🔥 SUMAR 10 PUNTOS POR QUIZ
+        puntos += 10;
+        localStorage.setItem("puntos", puntos);
+        document.getElementById("points").textContent = puntos;
+
+        guardarPuntosEnServidor(puntos); // enviar al backend
     }
 
     localStorage.removeItem("quizCompletado");
@@ -235,5 +242,6 @@ function cambiarPuntos() {
         }
     }
 }
+
 
 
