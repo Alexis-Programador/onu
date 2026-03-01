@@ -2,6 +2,13 @@ const subjects = document.querySelectorAll(".subject");
 const calendar = document.getElementById("calendar");
 const progressBar = document.getElementById("progress");
 
+/* --------- PUNTOS (ARRIBA DEL TODO) --------- */
+let puntos = parseInt(localStorage.getItem("puntos")) || 0;
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("points").textContent = puntos;
+});
+
 /* --------- FECHA --------- */
 const today = new Date();
 let currentDay = today.getDate();
@@ -165,12 +172,6 @@ setInterval(() => {
 }, 60000);
 
 
-
-/* --------- PUNTOS --------- */
-let puntos = parseInt(localStorage.getItem("puntos")) || 0;
-document.getElementById("points").textContent = puntos;
-
-
 /* --------- QUIZ COMPLETADO --------- */
 const quizCompletado = localStorage.getItem("quizCompletado");
 
@@ -250,6 +251,7 @@ function cambiarPuntos() {
         }
     }
 }
+
 
 
 
