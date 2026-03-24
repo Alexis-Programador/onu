@@ -171,6 +171,13 @@ cursor:pointer;
 <input id="regPass" type="password" placeholder="Contraseña">
 </div>
 
+  <div id="validaciones" style="text-align:left; font-size:13px; margin-top:5px;">
+  <div id="v1">❌ Mínimo 6 caracteres</div>
+  <div id="v2">❌ Una mayúscula</div>
+  <div id="v3">❌ Un número</div>
+  <div id="v4">❌ Un carácter especial</div>
+</div>
+
 <button onclick="registro()">Crear Cuenta</button>
 
 <div class="link" onclick="mostrarLogin()">Ya tengo cuenta</div>
@@ -217,6 +224,38 @@ let pass = document.getElementById("regPass").value;
 
 // 🔐 VALIDACIÓN SEGURA
 const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$/;
+
+  const passInput = document.getElementById("regPass");
+
+passInput.addEventListener("input", ()=>{
+
+let val = passInput.value;
+
+// reglas
+let min = val.length >= 6;
+let mayus = /[A-Z]/.test(val);
+let num = /\d/.test(val);
+let esp = /[\W_]/.test(val);
+
+// actualizar UI
+actualizar("v1", min);
+actualizar("v2", mayus);
+actualizar("v3", num);
+actualizar("v4", esp);
+
+});
+
+function actualizar(id, cumple){
+let el = document.getElementById(id);
+
+if(cumple){
+el.innerHTML = "✅ " + el.innerHTML.replace("❌ ","").replace("✅ ","");
+el.style.color = "#00e676";
+}else{
+el.innerHTML = "❌ " + el.innerHTML.replace("❌ ","").replace("✅ ","");
+el.style.color = "#ff5252";
+}
+}
 
 if(!regex.test(pass)){
 alert("❌ La contraseña debe tener:\n- Mínimo 6 caracteres\n- 1 mayúscula\n- 1 número\n- 1 carácter especial");
