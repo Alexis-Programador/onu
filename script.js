@@ -13,7 +13,6 @@ header {
     text-align: center;
     border-bottom: 2px solid #ffffff33;
 }
-
 /* LOGO */
 .logo {
     display: flex;
