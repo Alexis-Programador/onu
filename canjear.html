@@ -12,6 +12,9 @@
   <h1>🎁 Tienda de Recompensas</h1>
   <p>Usa tus puntos sabiamente 🧠✨</p>
   <h2>🏆 Tus puntos: <span id="puntosTienda">0</span></h2>
+
+  <!-- BOTÓN REGRESAR -->
+  <button onclick="volverLogin()" style="margin-top:10px;">⬅ Volver al Login</button>
 </header>
 
 <div class="container tienda-grid">
@@ -61,5 +64,12 @@
 </div>
 
 <script src="canjear.js"></script>
+
+<script>
+function volverLogin(){
+  window.location.href = "login.html"; // cambia si tu archivo tiene otro nombre
+}
+</script>
+
 </body>
 </html>
