@@ -101,30 +101,29 @@ let espacios = primerDia - 1;
     }
 
     /* ========= QUIZ COMPLETADO ========= */
-    if(localStorage.getItem("quizCompletado") === "true"){
+if(localStorage.getItem("quizCompletado") === "true"){
 
-        const index = parseInt(localStorage.getItem("materiaIndex"));
+    const index = parseInt(localStorage.getItem("materiaIndex"));
 
-        if(!isNaN(index) && !completedToday.includes(index)){
+    if(!isNaN(index) && !completedToday.includes(index)){
 
-            completedToday.push(index);
-            localStorage.setItem("todaySubjects", JSON.stringify(completedToday));
+        completedToday.push(index);
+        localStorage.setItem("todaySubjects", JSON.stringify(completedToday));
 
-            puntos += 10;
-            localStorage.setItem("puntos", puntos);
-            pointsElement.textContent = puntos;
+        // 🔥 puntos dinámicos
+        let puntosGanados = parseInt(localStorage.getItem("puntosGanados")) || 0;
 
-            actualizarProgreso();
-        }
+        puntos += puntosGanados;
+        localStorage.setItem("puntos", puntos);
+        pointsElement.textContent = puntos;
 
-        localStorage.removeItem("quizCompletado");
+        actualizarProgreso();
     }
 
-    generarCalendario();
-    actualizarProgreso();
-});
-
-
+    localStorage.removeItem("quizCompletado");
+    localStorage.removeItem("puntosGanados");
+}
+    
 /* ========= FUNCIONES GLOBALES ========= */
 
 function resetearMaterias(){
