@@ -1,24 +1,41 @@
 body {
     margin: 0;
-    font-family: Arial;
-    background: #f4fff6;
-    color: #222;
+    font-family: 'Segoe UI', sans-serif;
+    background: url("Ac.jpg") no-repeat center center/cover;
+    color: white;
 }
 
 /* HEADER */
 header {
-    background: #2e8b57;
-    color: white;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(10px);
     padding: 20px;
     text-align: center;
 }
 
+
+/* LOGO */
+.logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.logo img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid white;
+}
+
+/* CONTENEDOR */
 .container {
     display: flex;
     gap: 20px;
     padding: 20px;
 }
 
+/* COLUMNAS */
 .left {
     width: 60%;
 }
@@ -27,17 +44,19 @@ header {
     width: 40%;
 }
 
+/* CARD (GLASS) */
 .card {
-    background: white;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(10px);
     padding: 20px;
     border-radius: 15px;
     margin-bottom: 20px;
-    box-shadow: 0px 5px 10px rgba(0,0,0,0.1);
+    box-shadow: 0px 5px 20px rgba(0,0,0,0.4);
 }
 
 /* BOTON */
 button {
-    background: #2e8b57;
+    background: #ff6a00;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -47,7 +66,7 @@ button {
 }
 
 button:hover {
-    background: #3fa96d;
+    background: #ff8c42;
 }
 
 /* MATERIAS */
@@ -58,23 +77,26 @@ button:hover {
     margin-top: 15px;
 }
 
+
 .subject {
-    background: #f0fff4;
+    background: rgba(255,255,255,0.1);
     padding: 15px;
     border-radius: 10px;
     cursor: pointer;
     text-align: center;
-    border: 2px solid #2e8b57;
+    border: 2px solid #ff6a00;
+    transition: 0.3s;
 }
 
 .subject:hover {
-    background: #2e8b57;
+    background: #ff6a00;
     color: white;
 }
 
+
 /* PROGRESO */
 .progress-bar {
-    background: #ddd;
+    background: rgba(255,255,255,0.2);
     height: 20px;
     border-radius: 10px;
     margin-top: 10px;
@@ -83,11 +105,11 @@ button:hover {
 #progress {
     height: 100%;
     width: 0%;
-    background: #2e8b57;
+    background: #ff6a00;
     border-radius: 10px;
 }
 
-/* CALENDARIO REAL */
+/* CALENDARIO */
 #calendar {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -99,41 +121,42 @@ button:hover {
 .diaTitulo {
     text-align: center;
     font-weight: bold;
-    color: #2e8b57;
+    color: #ff6a00;
 }
+
 
 /* DIAS */
 .day {
-    background: #f0fff4;
+    background: rgba(255,255,255,0.1);
     padding: 12px;
     border-radius: 8px;
     text-align: center;
-    border: 1px solid #2e8b57;
+    border: 1px solid #ff6a00;
     font-weight: bold;
 }
 
 /* HOY */
 .today {
-    border: 3px solid #2e8b57;
+    border: 3px solid #ff6a00;
 }
 
 /* COLORES PROGRESO */
 .red {
-    background: #ffd6d6;
+    background: #ff4d4d;
 }
 
 .yellow {
-    background: #fff4b3;
+    background: #ffcc00;
 }
 
 .green {
-    background: #c8f7c5;
+    background: #00c853;
 }
 
-/* CUADRO DE PUNTOS */
+/* PUNTOS */
 .score-box {
-    background: #f0fff4;
-    border: 2px solid #2e8b57;
+    background: rgba(255,255,255,0.1);
+    border: 2px solid #ff6a00;
     border-radius: 10px;
     padding: 15px;
     text-align: center;
@@ -150,32 +173,26 @@ button:hover {
 }
 
 .mini-card {
-    background:white;
-    border-radius:15px;
-    padding:15px;
-    text-align:center;
-    box-shadow:0 5px 10px rgba(0,0,0,0.1);
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 15px;
+    text-align: center;
 }
 
 .mini-card h3 {
-    margin:10px 0;
+    margin: 10px 0;
 }
 
 .mini-card p {
-    font-size:16px;
-    color:#555;
+    font-size: 16px;
+    color: #ccc;
 }
 
 .mini-card button {
-    background:#2e8b57;
-    color:white;
-    border:none;
-    padding:10px 20px;
-    border-radius:10px;
-    cursor:pointer;
-    font-size:16px;
+    background: #ff6a00;
 }
 
 .mini-card button:hover {
-    background:#3fa96d;
+    background: #ff8c42;
 }
