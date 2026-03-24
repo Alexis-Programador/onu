@@ -2,17 +2,16 @@ body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
     background: url("Ac.jpg") no-repeat center center/cover;
-    color: white;
+    color: #f5f5f5;
 }
 
 /* HEADER */
 header {
-    background: rgba(0,0,0,0.5);
-    backdrop-filter: blur(10px);
+    background: rgba(30,10,10,0.7);
+    backdrop-filter: blur(12px);
     padding: 20px;
     text-align: center;
 }
-
 
 /* LOGO */
 .logo {
@@ -22,10 +21,10 @@ header {
 }
 
 .logo img {
-    width: 80px;
-    height: 80px;
+    width: 85px;
+    height: 85px;
     border-radius: 50%;
-    border: 3px solid white;
+    border: 3px solid #8b2c2c;
 }
 
 /* CONTENEDOR */
@@ -36,37 +35,34 @@ header {
 }
 
 /* COLUMNAS */
-.left {
-    width: 60%;
-}
+.left { width: 60%; }
+.right { width: 40%; }
 
-.right {
-    width: 40%;
-}
-
-/* CARD (GLASS) */
+/* CARD */
 .card {
-    background: rgba(0,0,0,0.4);
-    backdrop-filter: blur(10px);
+    background: rgba(40,15,15,0.6);
+    backdrop-filter: blur(12px);
     padding: 20px;
     border-radius: 15px;
     margin-bottom: 20px;
-    box-shadow: 0px 5px 20px rgba(0,0,0,0.4);
+    box-shadow: 0px 5px 25px rgba(80,20,20,0.4);
 }
 
-/* BOTON */
+/* BOTONES */
 button {
-    background: #ff6a00;
-    color: white;
+    background: linear-gradient(135deg, #7a1f1f, #4b0f0f);
+    color: #fff;
     border: none;
     padding: 10px 20px;
     border-radius: 10px;
     cursor: pointer;
     font-size: 16px;
+    transition: 0.3s;
 }
 
 button:hover {
-    background: #ff8c42;
+    background: linear-gradient(135deg, #9c2f2f, #661111);
+    transform: scale(1.05);
 }
 
 /* MATERIAS */
@@ -77,26 +73,25 @@ button:hover {
     margin-top: 15px;
 }
 
-
 .subject {
-    background: rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.05);
     padding: 15px;
     border-radius: 10px;
     cursor: pointer;
     text-align: center;
-    border: 2px solid #ff6a00;
+    border: 2px solid #7a1f1f;
     transition: 0.3s;
 }
 
 .subject:hover {
-    background: #ff6a00;
+    background: linear-gradient(135deg, #7a1f1f, #4b0f0f);
     color: white;
+    transform: scale(1.05);
 }
-
 
 /* PROGRESO */
 .progress-bar {
-    background: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.1);
     height: 20px;
     border-radius: 10px;
     margin-top: 10px;
@@ -105,7 +100,7 @@ button:hover {
 #progress {
     height: 100%;
     width: 0%;
-    background: #ff6a00;
+    background: linear-gradient(90deg, #7a1f1f, #4b0f0f);
     border-radius: 10px;
 }
 
@@ -121,42 +116,38 @@ button:hover {
 .diaTitulo {
     text-align: center;
     font-weight: bold;
-    color: #ff6a00;
+    color: #c46b6b;
 }
-
 
 /* DIAS */
 .day {
-    background: rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.05);
     padding: 12px;
     border-radius: 8px;
     text-align: center;
-    border: 1px solid #ff6a00;
+    border: 1px solid #7a1f1f;
     font-weight: bold;
+}
+
+.day:hover {
+    background: #7a1f1f;
 }
 
 /* HOY */
 .today {
-    border: 3px solid #ff6a00;
+    border: 3px solid #c46b6b;
+    background: rgba(122,31,31,0.3);
 }
 
-/* COLORES PROGRESO */
-.red {
-    background: #ff4d4d;
-}
-
-.yellow {
-    background: #ffcc00;
-}
-
-.green {
-    background: #00c853;
-}
+/* PROGRESO COLORES */
+.red { background: #8b2c2c; }
+.yellow { background: #c49b3a; }
+.green { background: #3a7a5a; }
 
 /* PUNTOS */
 .score-box {
-    background: rgba(255,255,255,0.1);
-    border: 2px solid #ff6a00;
+    background: rgba(255,255,255,0.05);
+    border: 2px solid #7a1f1f;
     border-radius: 10px;
     padding: 15px;
     text-align: center;
@@ -173,26 +164,14 @@ button:hover {
 }
 
 .mini-card {
-    background: rgba(0,0,0,0.4);
+    background: rgba(40,15,15,0.6);
     backdrop-filter: blur(10px);
     border-radius: 15px;
     padding: 15px;
     text-align: center;
-}
-
-.mini-card h3 {
-    margin: 10px 0;
+    box-shadow: 0px 5px 20px rgba(80,20,20,0.4);
 }
 
 .mini-card p {
-    font-size: 16px;
-    color: #ccc;
-}
-
-.mini-card button {
-    background: #ff6a00;
-}
-
-.mini-card button:hover {
-    background: #ff8c42;
+    color: #ddd;
 }
