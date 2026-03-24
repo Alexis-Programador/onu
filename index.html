@@ -147,7 +147,6 @@ cursor:pointer;
 <input id="loginPass" type="password" placeholder="Contraseña">
 </div>
 
-<div class="link" onclick="recuperar()">He olvidado mi contraseña</div>
 
 <button onclick="login()">Iniciar Sesión</button>
 
@@ -210,30 +209,6 @@ document.getElementById("loginBox").style.display="block";
 document.getElementById("registerBox").style.display="none";
 }
 
-window.recuperar = async ()=>{
-
-let email = document.getElementById("loginEmail").value.trim();
-
-if(email === ""){
-alert("❌ Escribe tu correo primero");
-return;
-}
-
-try{
-
-await sendPasswordResetEmail(auth, email, {
-  url: "https://alexis-programador.github.io/onu/reset.html",
-  handleCodeInApp: true
-});
-
-alert("📩 Se envió un correo para restablecer tu contraseña");
-
-}catch(e){
-alert("Error: " + e.message);
-}
-
-}
-  
 /* REGISTRO CON VERIFICACIÓN */
 window.registro = async ()=>{
 
