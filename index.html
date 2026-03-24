@@ -1,149 +1,120 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
 <meta charset="UTF-8">
-<title>Login Inteligente</title>
+<title>Login Pro</title>
 
 <style>
 
-body{
-background:rgb(255, 255, 255);
-font-family:Arial;
+*{
 margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI', sans-serif;
+}
+
+body{
 height:100vh;
+background:url("Ac.jpg") no-repeat center center/cover;
 display:flex;
 justify-content:center;
 align-items:center;
-color:rgb(104, 175, 126);
 }
 
-#switch{
-display:none;
-}
-
-.container{
-perspective:1200px;
-position:relative;
-}
-
-.card{
-width:380px;
-height:420px;
-position:relative;
-transform-style:preserve-3d;
-transition:1s;
-}
-
-#switch:checked ~ .container .card{
-transform:rotateY(180deg);
-}
-
-.side{
+/* NAV SUPERIOR */
+.topbar{
 position:absolute;
+top:0;
+left:10;
 width:100%;
-height:100%;
-border-radius:20px;
-background:rgb(255, 255, 255);
-padding:25px;
-backface-visibility:hidden;
-
-box-shadow:
-0 0 10px rgb(141, 194, 136),
-0 0 20px rgb(21, 255, 0),
-0 0 40px rgb(21, 255, 0);
-
-animation:borde 3s linear infinite;
+display:flex;
+justify-content:space-between;
+padding:15px 30px;
+color:white;
+font-weight:bold;
 }
 
-@keyframes borde{
-0%{box-shadow:0 0 10px rgb(21, 126, 12);}
-50%{box-shadow:0 0 50px rgb(21, 255, 0);}
-100%{box-shadow:0 0 10px rgb(21, 255, 0);}
-}
-
-.register{
-transform:rotateY(180deg);
-}
-
-h2{
-text-align:center;
-}
-
-input{
-width:95%;
-padding:12px;
-margin-top:10px;
-border-radius:8px;
-border:2px solid rgb(21, 255, 0);
-background: rgb(255, 255, 255);
-}
-
-button{
-margin-top:20px;
-width:100%;
-padding:13px;
-border:none;
-border-radius:10px;
-background:linear-gradient(to right,#39ff02,#88ff00);
-color:rgb(255, 255, 255);
-font-size:16px;
+.topbar a{
+color:white;
+text-decoration:none;
 cursor:pointer;
 }
 
-.sideButton{
+/* CARD */
+.card{
+width:350px;
+padding:40px 25px;
+background:rgba(0,0,0,0.4);
+backdrop-filter:blur(10px);
+border-radius:15px;
+text-align:center;
+color:white;
+position:relative;
+}
+
+/* LOGO */
+.logo{
 position:absolute;
+top:-50px;
+left:50%;
+transform:translateX(-50%);
+}
+
+.logo img{
+width:90px;
+height:90px;
+border-radius:50%;
+border:4px solid white;
+}
+
+/* TITULO */
+h2{
+margin-top:40px;
+margin-bottom:20px;
+}
+
+/* INPUTS */
+.input-box{
+position:relative;
+margin:15px 0;
+}
+
+.input-box input{
+width:100%;
+padding:12px 40px;
+border:none;
+border-radius:6px;
+outline:none;
+}
+
+.input-box span{
+position:absolute;
+left:10px;
 top:50%;
 transform:translateY(-50%);
-width:80px;
-height:250px;
+color:#555;
+}
+
+/* BOTON */
+button{
+width:100%;
+padding:12px;
+margin-top:15px;
+border:none;
+background:#ff6a00;
+color:white;
+border-radius:6px;
 cursor:pointer;
 }
 
-.arrow{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-font-size:40px;
-opacity:0;
-transition:0.3s;
+button:hover{
+background:#ff8c42;
 }
 
-.container:hover .arrow{
-opacity:1;
-}
-
-.left{ left:-110px; }
-.right{ right:-110px; }
-
-#switch:not(:checked) ~ .container .left{
-display:none;
-}
-
-#switch:checked ~ .container .right{
-display:none;
-}
-
-.notify{
-position:absolute;
-top:30%;
-width:220px;
-padding:15px;
-border-radius:10px;
-background:#ffffff;
-border:2px solid rgba(21, 255, 0);
-box-shadow:0 0 10px rgb(21, 255, 0);
-font-size:14px;
-display:none;
-}
-
-.notifyLogin{
-left:20px;
-}
-
-.notifyRegister{
-right:20px;
+.link{
+margin-top:10px;
+font-size:13px;
+cursor:pointer;
 }
 
 </style>
@@ -152,246 +123,138 @@ right:20px;
 
 <body>
 
+<div class="topbar">
+<div>Odisea</div>
+<div><a onclick="mostrarRegistro()">Regístrate</a></div>
+</div>
 
-<input type="checkbox" id="switch">
+<!-- LOGIN -->
+<div class="card" id="loginBox">
 
+<div class="logo">
+<img src="Img.jpeg">
+</div>
 
-<div class="container">
+<h2>Inicio de Sesión</h2>
 
+<div class="input-box">
+<span>👤</span>
+<input id="loginEmail" type="email" placeholder="Correo">
+</div>
 
-<label for="switch" class="sideButton left">
-<div class="arrow">◀</div>
-</label>
+<div class="input-box">
+<span>🔑</span>
+<input id="loginPass" type="password" placeholder="Contraseña">
+</div>
 
-<label for="switch" class="sideButton right">
-<div class="arrow">▶</div>
-</label>
+<div class="link">He olvidado mi contraseña</div>
 
-
-<div class="card">
-
-
-<div class="side">
-
-<h2>INICIAR SESIÓN</h2>
-
-Correo
-<input id="correoLogin" type="text">
-
-Contraseña
-<input id="passLogin" type="password">
-
-<button onclick="login()">
-Entrar
-</button>
+<button onclick="login()">Iniciar Sesión</button>
 
 </div>
 
+<!-- REGISTRO -->
+<div class="card" id="registerBox" style="display:none;">
 
-<div class="side register">
+<div class="logo">
+<img src="Img.jpeg">
+</div>
 
-<h2>REGISTRO</h2>
+<h2>Registro</h2>
 
-Correo
-<input id="correoReg" type="text">
+<div class="input-box">
+<span>📧</span>
+<input id="regEmail" type="email" placeholder="Correo">
+</div>
 
-Contraseña
-<input id="passReg" type="password">
+<div class="input-box">
+<span>🔒</span>
+<input id="regPass" type="password" placeholder="Contraseña">
+</div>
 
-<button onclick="registro()">
-Crear Cuenta
-</button>
+<button onclick="registro()">Crear Cuenta</button>
+
+<div class="link" onclick="mostrarLogin()">Ya tengo cuenta</div>
 
 </div>
 
-</div>
-
-</div>
-
-
-<div class="notify notifyLogin" id="avisosLogin"></div>
-<div class="notify notifyRegister" id="avisosReg"></div>
-
-
+<!-- FIREBASE -->
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
-getDatabase,
-ref,
-set,
-get
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+getAuth,
+createUserWithEmailAndPassword,
+signInWithEmailAndPassword,
+sendEmailVerification
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDSExbNQt2glE3uPIYIESbpR-WMyG2ts0M",
   authDomain: "act23-547b9.firebaseapp.com",
-  databaseURL: "https://act23-547b9-default-rtdb.firebaseio.com",
   projectId: "act23-547b9",
-  storageBucket: "act23-547b9.firebasestorage.app",
-  messagingSenderId: "329465558346",
-  appId: "1:329465558346:web:0f7667ed31a03c0589fdb3"
 };
 
 const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+const auth = getAuth(app);
 
-/* Mostrar avisos */
-function mostrarAviso(elemento,texto){
-    elemento.style.display="block";
-    elemento.innerHTML=texto;
-    setTimeout(()=>{ elemento.style.display="none"; },4000);
+/* CAMBIOS */
+window.mostrarRegistro = ()=>{
+document.getElementById("loginBox").style.display="none";
+document.getElementById("registerBox").style.display="block";
 }
 
-/* Validar correo */
-function validarCorreo(correo){
-    const regex=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(correo);
+window.mostrarLogin = ()=>{
+document.getElementById("loginBox").style.display="block";
+document.getElementById("registerBox").style.display="none";
 }
 
-/* Hash seguro */
-async function hashPassword(password){
-    const encoder=new TextEncoder();
-    const data=encoder.encode(password);
-    const hashBuffer=await crypto.subtle.digest("SHA-256",data);
-    return Array.from(new Uint8Array(hashBuffer))
-    .map(b=>b.toString(16).padStart(2,"0")).join("");
+/* REGISTRO CON VERIFICACIÓN */
+window.registro = async ()=>{
+
+let email = document.getElementById("regEmail").value;
+let pass = document.getElementById("regPass").value;
+
+try{
+let userCred = await createUserWithEmailAndPassword(auth,email,pass);
+
+// enviar correo
+await sendEmailVerification(userCred.user);
+
+alert("📩 Se envió un correo de verificación. Revisa tu email antes de iniciar sesión.");
+
+}catch(e){
+alert(e.message);
+}
 }
 
-/* REGISTRO */
-window.registro = async function(){
+/* LOGIN */
+window.login = async ()=>{
 
-    let correo = document.getElementById("correoReg").value.trim();
-    let pass = document.getElementById("passReg").value;
-    let avisos = document.getElementById("avisosReg");
-    let texto = "";
+let email = document.getElementById("loginEmail").value;
+let pass = document.getElementById("loginPass").value;
 
-    // Validar correo vacío
-    if(correo === ""){
-        texto += "<div>Debe escribir un correo</div>";
-    }
+try{
+let userCred = await signInWithEmailAndPassword(auth,email,pass);
 
-    // Detectar @
-    if(!correo.includes("@")){
-        texto += "<div>Falta el símbolo @</div>";
-    }
-
-    // Detectar gmail.com
-    if(!correo.endsWith("gmail.com")){
-        texto += "<div>Debe contener gmail.com</div>";
-    }
-
-    // Validar contraseña vacía
-    if(pass === ""){
-        texto += "<div>Debe escribir una contraseña</div>";
-    }
-
-    // Longitud mínima
-    if(pass !== "" && pass.length < 8){
-        texto += "<div>Mínimo 8 caracteres</div>";
-    }
-
-    if(texto !== ""){
-        mostrarAviso(avisos,texto);
-        return;
-    }
-
-    const usuariosRef = ref(db,"usuarios");
-    const snapshot = await get(usuariosRef);
-    let datos = snapshot.exists()? snapshot.val() : {};
-
-    // Verificar duplicado
-    for(let key in datos){
-        if(datos[key].correo === correo){
-            mostrarAviso(avisos,"✖ Correo ya registrado");
-            return;
-        }
-    }
-
-    let newId = Object.keys(datos).length + 1;
-    let passHash = await hashPassword(pass);
-
-    await set(ref(db,"usuarios/user_"+newId),{
-        uid:newId,
-        correo:correo,
-        password:passHash
-    });
-
-    mostrarAviso(avisos,"✔ Cuenta creada correctamente");
+// verificar si confirmó correo
+if(!userCred.user.emailVerified){
+alert("⚠️ Debes verificar tu correo primero");
+return;
 }
 
-/* LOGIN */window.login = async function(){
+alert("✅ Bienvenido");
 
-    let correo = document.getElementById("correoLogin").value.trim();
-    let pass = document.getElementById("passLogin").value;
-    let avisos = document.getElementById("avisosLogin");
-    let texto = "";
+// redirigir
+window.location.href="loggin.html";
 
-    if(correo === ""){
-        texto += "<div>Debe escribir un correo</div>";
-    }
-
-    if(!correo.includes("@")){
-        texto += "<div>Falta el símbolo @</div>";
-    }
-
-    if(!correo.endsWith("gmail.com")){
-        texto += "<div>Debe contener gmail.com</div>";
-    }
-
-    if(pass === ""){
-        texto += "<div>Debe escribir una contraseña</div>";
-    }
-
-    if(pass !== "" && pass.length < 8){
-        texto += "<div>Contraseña inválida</div>";
-    }
-
-    if(texto !== ""){
-        mostrarAviso(avisos,texto);
-        return;
-    }
-
-    const snapshot = await get(ref(db,"usuarios"));
-
-    if(!snapshot.exists()){
-        mostrarAviso(avisos,"✖ No hay usuarios registrados");
-        return;
-    }
-
-    let datos = snapshot.val();
-    let usuario = null;
-
-    for(let key in datos){
-        if(datos[key].correo === correo){
-            usuario = datos[key];
-            break;
-        }
-    }
-
-    if(!usuario){
-        mostrarAviso(avisos,"✖ Usuario no encontrado");
-        return;
-    }
-
-    let passHash = await hashPassword(pass);
-
-  if(usuario.password === passHash){
-
-        mostrarAviso(avisos,"✔ Inicio correcto");
-
-        // 🔥 Guardar sesión básica
-        localStorage.setItem("usuario", usuario.correo);
-
-        // 🔥 Redireccionar a login.html
-        setTimeout(()=>{
-            window.location.href = "loggin.html";
-        },1000);
-
-    }else{
-        mostrarAviso(avisos,"✖ Contraseña incorrecta");
-    }
+}catch(e){
+alert("Error: " + e.message);
 }
+
+}
+
 </script>
 
-
+</body>
+</html>
