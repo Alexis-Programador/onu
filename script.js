@@ -1,6 +1,5 @@
 let puntos = 0;
 let completedToday = [];
-let currentDay, month, year;
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -15,20 +14,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* ========= FECHA ========= */
     const today = new Date();
-    currentDay = today.getDate();
-    month = today.getMonth();
-    year = today.getFullYear();
+    const currentDay = today.getDate();
+    const month = today.getMonth();
+    const year = today.getFullYear();
 
-    /* ========= MATERIAS HECHAS ========= */
+    /* ========= MATERIAS ========= */
     completedToday = JSON.parse(localStorage.getItem("todaySubjects")) || [];
 
-    /* ========= BLOQUEAR MATERIA ========= */
     function bloquearMateria(subject) {
         subject.style.pointerEvents = "none";
         subject.style.opacity = "0.6";
     }
 
-    /* ========= CLICK MATERIAS ========= */
     subjects.forEach((subject, index) => {
 
         if (completedToday.includes(index)) bloquearMateria(subject);
@@ -41,25 +38,23 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("materiaIndex", index);
 
             const materia = subject.dataset.materia.trim().toLowerCase();
-            let htmlDestino = "";
 
-            switch(materia){
-                case "matemáticas": htmlDestino = "matematicas.html"; break;
-                case "español": htmlDestino = "espanol.html"; break;
-                case "inglés": htmlDestino = "ingles.html"; break;
-                case "historia": htmlDestino = "historia.html"; break;
-                case "programación": htmlDestino = "programacion.html"; break;
-                case "ciencias": htmlDestino = "ciencias.html"; break;
-                default: htmlDestino = "materias.html"; break;
-            }
+            let paginas = {
+                "matemáticas": "matematicas.html",
+                "español": "espanol.html",
+                "inglés": "ingles.html",
+                "historia": "historia.html",
+                "programación": "programacion.html",
+                "ciencias": "ciencias.html"
+            };
 
-            window.location.href = htmlDestino;
+            window.location.href = paginas[materia] || "materias.html";
         });
     });
 
     /* ========= PROGRESO ========= */
     function actualizarProgreso() {
-        const porcentaje = subjects.length === 0 ? 0 : (completedToday.length / subjects.length) * 100;
+        let porcentaje = (completedToday.length / subjects.length) * 100;
         progressBar.style.width = porcentaje + "%";
     }
 
@@ -71,8 +66,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const diasSemana = ["L","M","Mi","J","V","S","D"];
 
         diasSemana.forEach(d => {
-            const div = document.createElement("div");
-            div.classList.add("diaTitulo");
+            let div = document.createElement("div");
+            div.className = "diaTitulo";
             div.textContent = d;
             calendar.appendChild(div);
         });
@@ -88,13 +83,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         for(let i=1;i<=diasMes;i++){
-            const dayDiv = document.createElement("div");
-            dayDiv.classList.add("day");
-            dayDiv.textContent = i;
+            let day = document.createElement("div");
+            day.className = "day";
+            day.textContent = i;
 
-            if(i === currentDay) dayDiv.classList.add("today");
+            if(i === currentDay) day.classList.add("today");
 
-            calendar.appendChild(dayDiv);
+            calendar.appendChild(day);
         }
     }
 
@@ -129,13 +124,12 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-/* ========= FUNCIONES GLOBALES ========= */
+/* ========= RESET ========= */
 
 function resetearMaterias(){
     if(confirm("¿Reiniciar materias del día?")){
         localStorage.removeItem("todaySubjects");
 
-        // 🔥 limpiar control de puntos
         Object.keys(localStorage).forEach(key => {
             if(key.startsWith("sumado_")){
                 localStorage.removeItem(key);
@@ -148,29 +142,20 @@ function resetearMaterias(){
 
 function resetearTodo(){
 
-    let pass = prompt("🔒 Ingresa la contraseña para borrar todo:");
+    let pass = prompt("🔒 Ingresa la contraseña:");
 
     if(pass === null) return;
 
-    const clave = localStorage.getItem("adminPass") || "1234";
+    const clave = "1234";
 
     if(pass !== clave){
-        alert("❌ Contraseña incorrecta");
+        alert("❌ Incorrecta");
         return;
     }
 
-    if(confirm("⚠️ ¿Seguro que quieres borrar TODO el progreso?")){
+    if(confirm("⚠️ ¿Borrar TODO?")){
 
-        localStorage.removeItem("puntos");
-        localStorage.removeItem("todaySubjects");
-        localStorage.removeItem("puntosGanados");
-
-        // 🔥 limpiar control de puntos
-        Object.keys(localStorage).forEach(key => {
-            if(key.startsWith("sumado_")){
-                localStorage.removeItem(key);
-            }
-        });
+        localStorage.clear();
 
         location.reload();
     }
