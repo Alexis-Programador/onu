@@ -221,7 +221,9 @@ return;
 
 try{
 
-await sendPasswordResetEmail(auth, email);
+await sendPasswordResetEmail(auth, email, {
+  url: "https://alexis-programador.github.io/reset.html"
+});
 
 alert("📩 Se envió un correo para restablecer tu contraseña");
 
