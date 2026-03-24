@@ -8,14 +8,20 @@ document.addEventListener("DOMContentLoaded", () => {
     const progressBar = document.getElementById("progress");
     const pointsElement = document.getElementById("points");
 
+    // 🔥 Evita que corra en login u otras páginas
+    if(!subjects.length) return;
+
+    /* ========= PUNTOS ========= */
     puntos = parseInt(localStorage.getItem("puntos")) || 0;
     pointsElement.textContent = puntos;
 
+    /* ========= FECHA ========= */
     const today = new Date();
     const currentDay = today.getDate();
     const month = today.getMonth();
     const year = today.getFullYear();
 
+    /* ========= MATERIAS ========= */
     completedToday = JSON.parse(localStorage.getItem("todaySubjects")) || [];
 
     function bloquearMateria(subject) {
@@ -36,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const materia = subject.dataset.materia.trim().toLowerCase();
 
-            let paginas = {
+            const paginas = {
                 "matemáticas": "matematicas.html",
                 "español": "espanol.html",
                 "inglés": "ingles.html",
@@ -49,11 +55,13 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    /* ========= PROGRESO ========= */
     function actualizarProgreso() {
         let porcentaje = (completedToday.length / subjects.length) * 100;
         progressBar.style.width = porcentaje + "%";
     }
 
+    /* ========= CALENDARIO ========= */
     function generarCalendario() {
 
         calendar.innerHTML = "";
@@ -88,6 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    /* ========= QUIZ COMPLETADO ========= */
     if(localStorage.getItem("quizCompletado") === "true"){
 
         const index = parseInt(localStorage.getItem("materiaIndex"));
@@ -117,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
     actualizarProgreso();
 });
 
-/* RESET */
+/* ========= RESET ========= */
 
 function resetearMaterias(){
     if(confirm("¿Reiniciar materias y puntos?")){
