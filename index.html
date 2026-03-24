@@ -124,7 +124,7 @@ cursor:pointer;
 <body>
 
 <div class="topbar">
-<div>Odisea</div>
+<div>Objetivo 4</div>
 <div><a onclick="mostrarRegistro()">Regístrate</a></div>
 </div>
 
@@ -215,6 +215,14 @@ window.registro = async ()=>{
 let email = document.getElementById("regEmail").value;
 let pass = document.getElementById("regPass").value;
 
+// 🔐 VALIDACIÓN SEGURA
+const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$/;
+
+if(!regex.test(pass)){
+alert("❌ La contraseña debe tener:\n- Mínimo 6 caracteres\n- 1 mayúscula\n- 1 número\n- 1 carácter especial");
+return;
+}
+  
 try{
 let userCred = await createUserWithEmailAndPassword(auth,email,pass);
 
