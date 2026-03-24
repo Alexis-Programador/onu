@@ -135,8 +135,21 @@ function resetearMaterias(){
 }
 
 function resetearTodo(){
-    if(confirm("¿Borrar TODO el progreso?")){
-        localStorage.clear();
-        location.reload();
-    }
+
+let pass = prompt("🔒 Ingresa la contraseña para borrar todo:");
+
+if(pass === null) return; // canceló
+
+const clave = "1234"; // 🔥 cambia esta contraseña
+
+if(pass !== clave){
+alert("❌ Contraseña incorrecta");
+return;
+}
+
+if(confirm("⚠️ ¿Seguro que quieres borrar TODO el progreso?")){
+localStorage.clear();
+location.reload();
+}
+
 }
