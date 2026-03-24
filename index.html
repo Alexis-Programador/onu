@@ -147,7 +147,7 @@ cursor:pointer;
 <input id="loginPass" type="password" placeholder="Contraseña">
 </div>
 
-<div class="link">He olvidado mi contraseña</div>
+<div class="link" onclick="recuperar()">He olvidado mi contraseña</div>
 
 <button onclick="login()">Iniciar Sesión</button>
 
@@ -186,7 +186,8 @@ import {
 getAuth,
 createUserWithEmailAndPassword,
 signInWithEmailAndPassword,
-sendEmailVerification
+sendEmailVerification,
+sendPasswordResetEmail
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
@@ -209,6 +210,27 @@ document.getElementById("loginBox").style.display="block";
 document.getElementById("registerBox").style.display="none";
 }
 
+window.recuperar = async ()=>{
+
+let email = document.getElementById("loginEmail").value;
+
+if(email === ""){
+alert("❌ Escribe tu correo primero");
+return;
+}
+
+try{
+
+await sendPasswordResetEmail(auth, email);
+
+alert("📩 Se envió un correo para restablecer tu contraseña");
+
+}catch(e){
+alert("Error: " + e.message);
+}
+
+}
+  
 /* REGISTRO CON VERIFICACIÓN */
 window.registro = async ()=>{
 
