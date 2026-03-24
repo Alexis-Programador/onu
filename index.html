@@ -222,9 +222,26 @@ window.registro = async ()=>{
 let email = document.getElementById("regEmail").value;
 let pass = document.getElementById("regPass").value;
 
-// 🔐 VALIDACIÓN SEGURA
+// VALIDACIÓN FINAL
 const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$/;
 
+if(!regex.test(pass)){
+alert("❌ La contraseña no cumple los requisitos");
+return;
+}
+
+try{
+let userCred = await createUserWithEmailAndPassword(auth,email,pass);
+
+await sendEmailVerification(userCred.user);
+
+alert("📩 Revisa tu correo para verificar tu cuenta");
+
+}catch(e){
+alert(e.message);
+}
+
+}
   const passInput = document.getElementById("regPass");
 
 passInput.addEventListener("input", ()=>{
@@ -254,24 +271,6 @@ el.style.color = "#00e676";
 }else{
 el.innerHTML = "❌ " + el.innerHTML.replace("❌ ","").replace("✅ ","");
 el.style.color = "#ff5252";
-}
-}
-
-if(!regex.test(pass)){
-alert("❌ La contraseña debe tener:\n- Mínimo 6 caracteres\n- 1 mayúscula\n- 1 número\n- 1 carácter especial");
-return;
-}
-  
-try{
-let userCred = await createUserWithEmailAndPassword(auth,email,pass);
-
-// enviar correo
-await sendEmailVerification(userCred.user);
-
-alert("📩 Se envió un correo de verificación. Revisa tu email antes de iniciar sesión.");
-
-}catch(e){
-alert(e.message);
 }
 }
 
