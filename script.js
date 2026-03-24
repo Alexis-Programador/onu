@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("materiaActual", subject.dataset.materia);
             localStorage.setItem("materiaIndex", index);
 
-            const materia = subject.dataset.materia.toLowerCase();
+        const materia = subject.dataset.materia.trim().toLowerCase();
             let htmlDestino = "";
 
             switch(materia){
@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function generarCalendario() {
 
         calendar.innerHTML = "";
-        const diasSemana = ["L","M","M","J","V","S","D"];
+       const diasSemana = ["L","M","Mi","J","V","S","D"];
 
         diasSemana.forEach(d => {
             const div = document.createElement("div");
@@ -81,9 +81,9 @@ document.addEventListener("DOMContentLoaded", () => {
             calendar.appendChild(div);
         });
 
-        const primerDia = new Date(year, month, 1).getDay();
-        const diasMes = new Date(year, month + 1, 0).getDate();
-        let espacios = primerDia === 0 ? 6 : primerDia - 1;
+       let primerDia = new Date(year, month, 1).getDay();
+primerDia = primerDia === 0 ? 7 : primerDia;
+let espacios = primerDia - 1;
 
         for(let i=0;i<espacios;i++){
             calendar.appendChild(document.createElement("div"));
@@ -140,7 +140,7 @@ let pass = prompt("🔒 Ingresa la contraseña para borrar todo:");
 
 if(pass === null) return; // canceló
 
-const clave = "1234"; // 🔥 cambia esta contraseña
+const clave = localStorage.getItem("adminPass") || "1234";
 
 if(pass !== clave){
 alert("❌ Contraseña incorrecta");
@@ -148,7 +148,8 @@ return;
 }
 
 if(confirm("⚠️ ¿Seguro que quieres borrar TODO el progreso?")){
-localStorage.clear();
+localStorage.removeItem("puntos");
+localStorage.removeItem("todaySubjects");
 location.reload();
 }
 
