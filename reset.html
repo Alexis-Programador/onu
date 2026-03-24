@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Restablecer contraseña</title>
+
+<style>
+body{
+background:#111;
+color:white;
+font-family:'Segoe UI';
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.box{
+background:rgba(0,0,0,0.6);
+padding:30px;
+border-radius:15px;
+text-align:center;
+}
+
+input{
+padding:10px;
+margin:10px 0;
+width:100%;
+border-radius:5px;
+border:none;
+}
+
+button{
+padding:10px;
+background:#ff6a00;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+<h2>Nueva contraseña</h2>
+
+<input id="newPass" type="password" placeholder="Nueva contraseña">
+
+<button onclick="cambiar()">Actualizar</button>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+getAuth,
+confirmPasswordReset
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDSExbNQt2glE3uPIYIESbpR-WMyG2ts0M",
+  authDomain: "act23-547b9.firebaseapp.com",
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// obtener código del link
+const params = new URLSearchParams(window.location.search);
+const oobCode = params.get("oobCode");
+
+window.cambiar = async ()=>{
+
+let pass = document.getElementById("newPass").value;
+
+// 🔐 VALIDACIÓN
+const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$/;
+
+if(!regex.test(pass)){
+alert("❌ Debe tener:\n- 6 caracteres\n- 1 mayúscula\n- 1 número\n- 1 especial");
+return;
+}
+
+try{
+
+await confirmPasswordReset(auth, oobCode, pass);
+
+alert("✅ Contraseña actualizada");
+window.location.href="index.html";
+
+}catch(e){
+alert("Error: "+e.message);
+}
+
+}
+
+</script>
+
+</body>
+</html>
