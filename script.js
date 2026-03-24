@@ -125,11 +125,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 /* ========= RESET ========= */
-
 function resetearMaterias(){
-    if(confirm("¿Reiniciar materias del día?")){
+    if(confirm("¿Reiniciar materias y puntos?")){
+
+        // borrar materias
         localStorage.removeItem("todaySubjects");
 
+        // 🔥 borrar puntos también
+        localStorage.removeItem("puntos");
+
+        // limpiar control de duplicados
         Object.keys(localStorage).forEach(key => {
             if(key.startsWith("sumado_")){
                 localStorage.removeItem(key);
@@ -139,7 +144,6 @@ function resetearMaterias(){
         location.reload();
     }
 }
-
 function resetearTodo(){
 
     let pass = prompt("🔒 Ingresa la contraseña:");
