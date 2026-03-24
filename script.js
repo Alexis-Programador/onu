@@ -1,6 +1,6 @@
 let puntos = 0;
 let completedToday = [];
-let currentDay, month, year, todayKey;
+let currentDay, month, year;
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -18,7 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
     currentDay = today.getDate();
     month = today.getMonth();
     year = today.getFullYear();
-    todayKey = `day-${year}-${month}-${currentDay}`;
 
     /* ========= MATERIAS HECHAS ========= */
     completedToday = JSON.parse(localStorage.getItem("todaySubjects")) || [];
@@ -41,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("materiaActual", subject.dataset.materia);
             localStorage.setItem("materiaIndex", index);
 
-        const materia = subject.dataset.materia.trim().toLowerCase();
+            const materia = subject.dataset.materia.trim().toLowerCase();
             let htmlDestino = "";
 
             switch(materia){
@@ -51,10 +50,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 case "historia": htmlDestino = "historia.html"; break;
                 case "programación": htmlDestino = "programacion.html"; break;
                 case "ciencias": htmlDestino = "ciencias.html"; break;
-                case "física": htmlDestino = "fisica.html"; break;
-                case "geografía": htmlDestino = "geografia.html"; break;
-                case "arte": htmlDestino = "arte.html"; break;
-                case "educación física": htmlDestino = "educacionfisica.html"; break;
                 default: htmlDestino = "materias.html"; break;
             }
 
@@ -64,7 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* ========= PROGRESO ========= */
     function actualizarProgreso() {
-        const porcentaje = (completedToday.length / subjects.length) * 100;
+        const porcentaje = subjects.length === 0 ? 0 : (completedToday.length / subjects.length) * 100;
         progressBar.style.width = porcentaje + "%";
     }
 
@@ -72,7 +67,8 @@ document.addEventListener("DOMContentLoaded", () => {
     function generarCalendario() {
 
         calendar.innerHTML = "";
-       const diasSemana = ["L","M","Mi","J","V","S","D"];
+
+        const diasSemana = ["L","M","Mi","J","V","S","D"];
 
         diasSemana.forEach(d => {
             const div = document.createElement("div");
@@ -81,9 +77,11 @@ document.addEventListener("DOMContentLoaded", () => {
             calendar.appendChild(div);
         });
 
-       let primerDia = new Date(year, month, 1).getDay();
-primerDia = primerDia === 0 ? 7 : primerDia;
-let espacios = primerDia - 1;
+        let primerDia = new Date(year, month, 1).getDay();
+        primerDia = primerDia === 0 ? 7 : primerDia;
+        let espacios = primerDia - 1;
+
+        const diasMes = new Date(year, month + 1, 0).getDate();
 
         for(let i=0;i<espacios;i++){
             calendar.appendChild(document.createElement("div"));
@@ -101,55 +99,79 @@ let espacios = primerDia - 1;
     }
 
     /* ========= QUIZ COMPLETADO ========= */
-if(localStorage.getItem("quizCompletado") === "true"){
+    if(localStorage.getItem("quizCompletado") === "true"){
 
-    const index = parseInt(localStorage.getItem("materiaIndex"));
+        const index = parseInt(localStorage.getItem("materiaIndex"));
+        const yaSumado = localStorage.getItem("sumado_" + index);
 
-    if(!isNaN(index) && !completedToday.includes(index)){
+        if(!isNaN(index) && !completedToday.includes(index) && !yaSumado){
 
-        completedToday.push(index);
-        localStorage.setItem("todaySubjects", JSON.stringify(completedToday));
+            completedToday.push(index);
+            localStorage.setItem("todaySubjects", JSON.stringify(completedToday));
 
-        // 🔥 puntos dinámicos
-        let puntosGanados = parseInt(localStorage.getItem("puntosGanados")) || 0;
+            let puntosGanados = parseInt(localStorage.getItem("puntosGanados")) || 0;
 
-        puntos += puntosGanados;
-        localStorage.setItem("puntos", puntos);
-        pointsElement.textContent = puntos;
+            puntos += puntosGanados;
+            localStorage.setItem("puntos", puntos);
+            pointsElement.textContent = puntos;
 
-        actualizarProgreso();
+            localStorage.setItem("sumado_" + index, "true");
+
+            actualizarProgreso();
+        }
+
+        localStorage.removeItem("quizCompletado");
+        localStorage.removeItem("puntosGanados");
     }
 
-    localStorage.removeItem("quizCompletado");
-    localStorage.removeItem("puntosGanados");
-}
-    
+    generarCalendario();
+    actualizarProgreso();
+});
+
+
 /* ========= FUNCIONES GLOBALES ========= */
 
 function resetearMaterias(){
     if(confirm("¿Reiniciar materias del día?")){
         localStorage.removeItem("todaySubjects");
+
+        // 🔥 limpiar control de puntos
+        Object.keys(localStorage).forEach(key => {
+            if(key.startsWith("sumado_")){
+                localStorage.removeItem(key);
+            }
+        });
+
         location.reload();
     }
 }
 
 function resetearTodo(){
 
-let pass = prompt("🔒 Ingresa la contraseña para borrar todo:");
+    let pass = prompt("🔒 Ingresa la contraseña para borrar todo:");
 
-if(pass === null) return; // canceló
+    if(pass === null) return;
 
-const clave = localStorage.getItem("adminPass") || "1234";
+    const clave = localStorage.getItem("adminPass") || "1234";
 
-if(pass !== clave){
-alert("❌ Contraseña incorrecta");
-return;
-}
+    if(pass !== clave){
+        alert("❌ Contraseña incorrecta");
+        return;
+    }
 
-if(confirm("⚠️ ¿Seguro que quieres borrar TODO el progreso?")){
-localStorage.removeItem("puntos");
-localStorage.removeItem("todaySubjects");
-location.reload();
-}
+    if(confirm("⚠️ ¿Seguro que quieres borrar TODO el progreso?")){
 
+        localStorage.removeItem("puntos");
+        localStorage.removeItem("todaySubjects");
+        localStorage.removeItem("puntosGanados");
+
+        // 🔥 limpiar control de puntos
+        Object.keys(localStorage).forEach(key => {
+            if(key.startsWith("sumado_")){
+                localStorage.removeItem(key);
+            }
+        });
+
+        location.reload();
+    }
 }
