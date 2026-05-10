@@ -107,6 +107,14 @@ let respondido = false;
 
 let puntosGuardados = false;
 
+/* MATERIA ACTUAL */
+
+let materiaActual =
+
+localStorage.getItem(
+"materiaActual"
+) || "ciencias";
+
 /* VIDAS */
 
 function actualizarVidas(){
@@ -176,7 +184,29 @@ if(respondido) return;
 
 respondido = true;
 
+/* CORRECTA */
+
 if(opcion===actual.correcta){
+
+/* GUARDAR CORRECTAS */
+
+let correctas =
+
+parseInt(
+localStorage.getItem(
+materiaActual + "_correctas"
+)
+) || 0;
+
+correctas++;
+
+localStorage.setItem(
+
+materiaActual + "_correctas",
+
+correctas
+
+);
 
 boton.style.background="#10b981";
 
@@ -197,7 +227,29 @@ feedback.style.color="#166534";
 
 }
 
+/* INCORRECTA */
+
 else{
+
+/* GUARDAR INCORRECTAS */
+
+let incorrectas =
+
+parseInt(
+localStorage.getItem(
+materiaActual + "_incorrectas"
+)
+) || 0;
+
+incorrectas++;
+
+localStorage.setItem(
+
+materiaActual + "_incorrectas",
+
+incorrectas
+
+);
 
 vidas--;
 
@@ -216,6 +268,8 @@ feedback.style.background="#fee2e2";
 
 feedback.style.color="#991b1b";
 
+/* MOSTRAR CORRECTA */
+
 const botones =
 document.querySelectorAll(".option");
 
@@ -233,6 +287,8 @@ btn.style.color="white";
 }
 
 });
+
+/* SIN VIDAS */
 
 if(vidas<=0){
 
@@ -288,20 +344,24 @@ opcionesHTML.innerHTML="";
 
 feedback.style.display="block";
 
+/* SI GANO */
+
 if(gano){
 
-   /* MARCAR QUIZ COMPLETADO */
+/* MARCAR COMPLETADO */
 
-    localStorage.setItem(
-    "quizCompletado",
-    "true"
-    );
+localStorage.setItem(
+"quizCompletado",
+"true"
+);
 
 let puntosActuales =
 
 parseInt(
 localStorage.getItem("puntos")
 )||0;
+
+/* GUARDAR PUNTOS */
 
 if(!puntosGuardados){
 
@@ -333,6 +393,8 @@ feedback.style.color="#166534";
 
 }
 
+/* SI PIERDE */
+
 else{
 
 preguntaTexto.textContent =
@@ -346,6 +408,8 @@ feedback.style.background="#fee2e2";
 feedback.style.color="#991b1b";
 
 }
+
+/* BOTON FINAL */
 
 nextBtn.innerHTML =
 "🏠 Regresar";
