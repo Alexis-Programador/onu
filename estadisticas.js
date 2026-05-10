@@ -2,12 +2,12 @@
 
 const materias = [
 
-"matemáticas",
-"español",
-"inglés",
-"historia",
-"programación",
-"ciencias"
+"Matemáticas",
+"Español",
+"Inglés",
+"Historia",
+"Programación",
+"Ciencias"
 
 ];
 
