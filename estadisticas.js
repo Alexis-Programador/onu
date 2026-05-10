@@ -2,16 +2,16 @@
 
 const materias = [
 
-"Matemáticas",
-"Español",
-"Inglés",
-"Historia",
-"Programación",
-"Ciencias"
+"matemáticas",
+"español",
+"inglés",
+"historia",
+"programación",
+"ciencias"
 
 ];
 
-/* CONTENEDOR */
+/* CONTENEDORES */
 
 const materiasStats =
 
@@ -31,25 +31,59 @@ document.getElementById(
 "iaTexto"
 );
 
-/* GENERAR DATOS */
+/* VARIABLES */
 
-let total = 0;
+let totalPorcentaje = 0;
 
 let mejores = [];
 
 let peores = [];
 
+/* GENERAR ESTADISTICAS REALES */
+
 materias.forEach(materia=>{
 
-/* SIMULACION */
+/* LEER DATOS */
 
-const porcentaje =
+const correctas =
 
-Math.floor(
-Math.random()*100
+parseInt(
+localStorage.getItem(
+materia + "_correctas"
+)
+) || 0;
+
+const incorrectas =
+
+parseInt(
+localStorage.getItem(
+materia + "_incorrectas"
+)
+) || 0;
+
+/* TOTAL RESPUESTAS */
+
+const total =
+
+correctas + incorrectas;
+
+/* PORCENTAJE */
+
+let porcentaje = 0;
+
+if(total > 0){
+
+porcentaje = Math.floor(
+
+(correctas / total) * 100
+
 );
 
-total += porcentaje;
+}
+
+/* SUMAR */
+
+totalPorcentaje += porcentaje;
 
 /* MEJORES */
 
@@ -61,7 +95,11 @@ mejores.push(materia);
 
 /* PEORES */
 
-if(porcentaje <= 50){
+if(
+porcentaje <= 50
+&&
+total > 0
+){
 
 peores.push(materia);
 
@@ -76,9 +114,17 @@ materiasStats.innerHTML +=
 
 <div class="materia-top">
 
-<span>${materia}</span>
+<span>
 
-<span>${porcentaje}%</span>
+${materia.toUpperCase()}
+
+</span>
+
+<span>
+
+${porcentaje}%
+
+</span>
 
 </div>
 
@@ -91,18 +137,35 @@ style="width:${porcentaje}%">
 
 </div>
 
+<br>
+
+<small>
+
+✅ Correctas:
+${correctas}
+
+&nbsp;&nbsp;&nbsp;
+
+❌ Incorrectas:
+${incorrectas}
+
+</small>
+
 </div>
 `;
 
 });
 
-/* PROMEDIO */
+/* PROMEDIO GENERAL */
 
 const promedio =
 
 Math.floor(
-total / materias.length
+totalPorcentaje /
+materias.length
 );
+
+/* TEXTO CIRCULO */
 
 porcentajeHTML.textContent =
 `${promedio}%`;
@@ -126,7 +189,7 @@ document.querySelector(".circle")
 
 let texto =
 
-"📈 Tu rendimiento general es bueno. ";
+"📈 Analizando rendimiento académico... ";
 
 /* MEJORES */
 
@@ -134,7 +197,7 @@ if(mejores.length > 0){
 
 texto +=
 
-`🔥 Destacas en:
+`🔥 Vas muy bien en:
 ${mejores.join(", ")}. `;
 
 }
@@ -145,8 +208,22 @@ if(peores.length > 0){
 
 texto +=
 
-`📚 Necesitas mejorar en:
+`📚 Necesitas practicar más:
 ${peores.join(", ")}.`;
+
+}
+
+/* SI NO HAY DATOS */
+
+if(
+mejores.length === 0
+&&
+peores.length === 0
+){
+
+texto =
+
+"🚀 Completa quizzes para generar estadísticas reales.";
 
 }
 
