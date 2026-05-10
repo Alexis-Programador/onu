@@ -285,6 +285,13 @@ function terminarQuiz(gano){
 
     if(gano){
 
+         /* MARCAR QUIZ COMPLETADO */
+
+    localStorage.setItem(
+    "quizCompletado",
+    "true"
+    );
+        
         let puntosActuales =
 
         parseInt(
