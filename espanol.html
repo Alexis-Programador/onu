@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Quiz Español</title>
+
+<link rel="stylesheet"
+href="quiz.css">
+
+</head>
+
+<body>
+
+<div class="quiz-container">
+
+    <!-- TOPBAR -->
+
+    <div class="topbar">
+
+        <div class="vidas">
+            ❤️ ❤️ ❤️
+        </div>
+
+        <div class="xp-box">
+
+            ⭐ XP:
+            <span id="xp">0</span>
+
+        </div>
+
+    </div>
+
+    <!-- BOTON SALIR -->
+
+    <div class="salir-box">
+
+        <button onclick="salirQuiz()">
+
+            🏠 Salir
+
+        </button>
+
+    </div>
+
+    <!-- CARD -->
+
+    <div class="quiz-card">
+
+        <div class="question-number">
+
+            Pregunta 1 de 5
+
+        </div>
+
+        <h1 id="pregunta">
+
+            Cargando pregunta...
+
+        </h1>
+
+        <!-- OPCIONES -->
+
+        <div class="options"></div>
+
+        <!-- FEEDBACK -->
+
+        <div class="feedback"></div>
+
+        <!-- BOTON -->
+
+        <button class="next-btn">
+
+            Continuar
+
+        </button>
+
+    </div>
+
+</div>
+
+<script src="espanol.js"></script>
+
+</body>
+</html>
