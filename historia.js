@@ -253,6 +253,13 @@ feedback.style.display="block";
 
 if(gano){
 
+ /* MARCAR QUIZ COMPLETADO */
+
+    localStorage.setItem(
+    "quizCompletado",
+    "true"
+    );
+  
 let puntosActuales =
 
 parseInt(
