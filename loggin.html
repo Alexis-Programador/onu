@@ -44,16 +44,21 @@ content="width=device-width, initial-scale=1">
     <div class="left">
 
         <!-- MATERIAS -->
+
         <div class="card">
 
             <h2>📘 Materias del Día</h2>
 
             <!-- PROGRESO -->
+
             <div class="progress-bar">
+
                 <div id="progress"></div>
+
             </div>
 
             <!-- MATERIAS -->
+
             <div class="subjects">
 
                 <div class="subject"
@@ -137,6 +142,7 @@ content="width=device-width, initial-scale=1">
     </div>
 
     <!-- DERECHA -->
+
     <div class="right">
 
         <!-- CALENDARIO -->
@@ -202,6 +208,18 @@ content="width=device-width, initial-scale=1">
 
 </div>
 
+<!-- BOTON ADMIN -->
+
+<div class="admin-bottom">
+
+<button onclick="resetearSistema()">
+
+🛠 Reiniciar TODO el Sistema
+
+</button>
+
+</div>
+
 <!-- SCRIPT FRASES -->
 
 <script>
@@ -248,6 +266,101 @@ obtenerFrase();
 <!-- SCRIPT -->
 
 <script src="script.js"></script>
+
+<style>
+
+/* ADMIN ABAJO */
+
+.admin-bottom{
+
+display:flex;
+
+justify-content:center;
+
+padding:40px 20px;
+
+}
+
+.admin-bottom button{
+
+background:
+linear-gradient(
+135deg,
+#ef4444,
+#dc2626
+);
+
+color:white;
+
+border:none;
+
+padding:18px 30px;
+
+border-radius:18px;
+
+font-size:18px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+transition:0.3s;
+
+box-shadow:
+0 8px 20px rgba(239,68,68,0.25);
+
+}
+
+.admin-bottom button:hover{
+
+transform:scale(1.05);
+
+background:
+linear-gradient(
+135deg,
+#dc2626,
+#b91c1c
+);
+
+}
+
+</style>
+
+<script>
+
+/* RESET TOTAL */
+
+function resetearSistema(){
+
+const codigo = prompt(
+"🔒 Contraseña admin:"
+);
+
+if(codigo === null) return;
+
+/* CONTRASEÑA */
+
+if(codigo !== "admin123"){
+
+alert(
+"❌ Contraseña incorrecta"
+);
+
+return;
+
+}
+
+/* BORRAR TODO */
+
+localStorage.clear();
+
+/* RECARGAR */
+
+location.reload();
+
+}
+
+</script>
 
 </body>
 </html>
