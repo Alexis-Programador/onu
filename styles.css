@@ -487,3 +487,32 @@ button:hover{
     font-size:17px;
 }
 
+/* RACHA */
+
+.streak-box{
+
+margin-top:15px;
+
+background:
+linear-gradient(
+135deg,
+#fef3c7,
+#fde68a
+);
+
+padding:15px;
+
+border-radius:18px;
+
+text-align:center;
+
+font-size:22px;
+
+font-weight:bold;
+
+color:#92400e;
+
+box-shadow:
+0 5px 15px rgba(251,191,36,0.2);
+
+}
