@@ -77,6 +77,8 @@ correcta:
 
 ];
 
+/* ELEMENTOS */
+
 const preguntaTexto =
 document.getElementById("pregunta");
 
@@ -98,6 +100,8 @@ document.querySelector(".question-number");
 const vidasHTML =
 document.querySelector(".vidas");
 
+/* VARIABLES */
+
 let preguntaActual = 0;
 
 let xp = 0;
@@ -107,6 +111,16 @@ let vidas = 3;
 let respondido = false;
 
 let puntosGuardados = false;
+
+/* MATERIA */
+
+let materiaActual =
+
+localStorage.getItem(
+"materiaActual"
+) || "historia";
+
+/* VIDAS */
 
 function actualizarVidas(){
 
@@ -119,6 +133,8 @@ vidasHTML.innerHTML += "❤️ ";
 }
 
 }
+
+/* MEZCLAR */
 
 function mezclarArray(array){
 
@@ -135,6 +151,8 @@ Math.floor(Math.random()*(i+1));
 return array;
 
 }
+
+/* CARGAR */
 
 function cargarPregunta(){
 
@@ -171,9 +189,32 @@ if(respondido) return;
 
 respondido = true;
 
+/* CORRECTA */
+
 if(opcion===actual.correcta){
 
+/* GUARDAR CORRECTAS */
+
+let correctas =
+
+parseInt(
+localStorage.getItem(
+materiaActual + "_correctas"
+)
+) || 0;
+
+correctas++;
+
+localStorage.setItem(
+
+materiaActual + "_correctas",
+
+correctas
+
+);
+
 boton.style.background="#10b981";
+
 boton.style.color="white";
 
 xp += 10;
@@ -187,15 +228,40 @@ feedback.innerHTML =
 
 feedback.style.background="#dcfce7";
 
+feedback.style.color="#166534";
+
 }
 
+/* INCORRECTA */
+
 else{
+
+/* GUARDAR INCORRECTAS */
+
+let incorrectas =
+
+parseInt(
+localStorage.getItem(
+materiaActual + "_incorrectas"
+)
+) || 0;
+
+incorrectas++;
+
+localStorage.setItem(
+
+materiaActual + "_incorrectas",
+
+incorrectas
+
+);
 
 vidas--;
 
 actualizarVidas();
 
 boton.style.background="#ef4444";
+
 boton.style.color="white";
 
 feedback.style.display="block";
@@ -205,9 +271,35 @@ feedback.innerHTML =
 
 feedback.style.background="#fee2e2";
 
+feedback.style.color="#991b1b";
+
+/* MOSTRAR CORRECTA */
+
+const botones =
+document.querySelectorAll(".option");
+
+botones.forEach(btn=>{
+
+if(
+btn.textContent===
+actual.correcta
+){
+
+btn.style.background="#10b981";
+
+btn.style.color="white";
+
+}
+
+});
+
+/* GAME OVER */
+
 if(vidas<=0){
 
 xp=0;
+
+xpText.textContent = xp;
 
 setTimeout(()=>{
 
@@ -227,6 +319,8 @@ opcionesHTML.appendChild(boton);
 
 }
 
+/* CONTINUAR */
+
 nextBtn.addEventListener("click",()=>{
 
 if(!respondido) return;
@@ -245,26 +339,32 @@ cargarPregunta();
 
 });
 
+/* TERMINAR */
+
 function terminarQuiz(gano){
 
 opcionesHTML.innerHTML="";
 
 feedback.style.display="block";
 
+/* SI GANO */
+
 if(gano){
 
- /* MARCAR QUIZ COMPLETADO */
+/* MARCAR COMPLETADO */
 
-    localStorage.setItem(
-    "quizCompletado",
-    "true"
-    );
-  
+localStorage.setItem(
+"quizCompletado",
+"true"
+);
+
 let puntosActuales =
 
 parseInt(
 localStorage.getItem("puntos")
 )||0;
+
+/* GUARDAR PUNTOS */
 
 if(!puntosGuardados){
 
@@ -283,24 +383,36 @@ preguntaTexto.textContent =
 "🎉 ¡Quiz completado!";
 
 feedback.innerHTML =
-`🏆 XP: ${xp}<br><br>
-⭐ Total: ${puntosActuales}`;
+`
+🏆 XP: ${xp}
+<br><br>
+⭐ Total:
+${puntosActuales}
+`;
 
 feedback.style.background="#dcfce7";
 
+feedback.style.color="#166534";
+
 }
+
+/* SI PIERDE */
 
 else{
 
 preguntaTexto.textContent =
-"💀 Sin vidas";
+"💀 Te quedaste sin vidas";
 
 feedback.innerHTML =
-"❌ Sin puntos";
+"❌ No ganaste puntos";
 
 feedback.style.background="#fee2e2";
 
+feedback.style.color="#991b1b";
+
 }
+
+/* BOTON FINAL */
 
 nextBtn.innerHTML =
 "🏠 Regresar";
@@ -314,12 +426,16 @@ window.location.href =
 
 }
 
+/* SALIR */
+
 function salirQuiz(){
 
 window.location.href =
 "loggin.html";
 
 }
+
+/* INICIAR */
 
 actualizarVidas();
 
