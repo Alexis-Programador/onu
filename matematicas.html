@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Quiz Matemáticas</title>
+
+<link rel="stylesheet"
+href="quiz.css">
+
+</head>
+
+<body>
+
+<div class="quiz-container">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+
+        <div class="vidas">
+            ❤️ ❤️ ❤️ ❤️ ❤️
+        </div>
+
+        <div class="xp-box">
+            ⭐ XP:
+            <span id="xp">0</span>
+        </div>
+
+    </div>
+
+    <div class="salir-box">
+
+<button onclick="salirQuiz()">
+
+❌ Salir
+
+</button>
+
+</div>
+
+    <!-- CARD -->
+    <div class="quiz-card">
+
+        <div class="question-number">
+            Pregunta 1 de 5
+        </div>
+
+        <h1 id="pregunta">
+            ¿Cuánto es 8 × 4?
+        </h1>
+
+        <!-- OPCIONES -->
+        <div class="options">
+
+            <button class="option">
+                12
+            </button>
+
+            <button class="option correct">
+                32
+            </button>
+
+            <button class="option">
+                18
+            </button>
+
+            <button class="option">
+                24
+            </button>
+
+        </div>
+
+        <!-- FEEDBACK -->
+       <div class="feedback">
+
+            ✅ ¡Correcto! Muy bien.
+
+        </div>
+
+        <!-- BOTON -->
+        <button class="next-btn">
+
+            Continuar
+
+        </button>
+
+    </div>
+
+</div>
+
+<script src="quiz.js"></script>
+
+</body>
+</html>

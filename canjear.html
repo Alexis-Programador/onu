@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tienda</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <h1>🎁 Tienda de Recompensas</h1>
+  <p>Usa tus puntos sabiamente 🧠✨</p>
+  <h2>🏆 Tus puntos: <span id="puntosTienda">0</span></h2>
+
+  <!-- BOTÓN REGRESAR -->
+  <button onclick="volverLogin()" style="margin-top:10px;">⬅ Volver al Login</button>
+</header>
+
+<div class="container tienda-grid">
+
+  <div class="mini-card">
+    <h3>💎 100 Diamantes FF</h3>
+    <p>50 puntos</p>
+    <button data-costo="50" data-nombre="Diamantes FF">Canjear</button>
+  </div>
+
+  <div class="mini-card">
+    <h3>🟢 80 Robux</h3>
+    <p>80 puntos</p>
+    <button data-costo="80" data-nombre="Robux">Canjear</button>
+  </div>
+
+  <div class="mini-card">
+    <h3>🎧 Spotify 1 Mes</h3>
+    <p>120 puntos</p>
+    <button data-costo="120" data-nombre="Spotify Premium">Canjear</button>
+  </div>
+
+  <div class="mini-card">
+    <h3>🎬 Streaming 1 Mes</h3>
+    <p>100 puntos</p>
+    <button data-costo="100" data-nombre="Streaming">Canjear</button>
+  </div>
+
+  <div class="mini-card">
+    <h3>🎮 Pase Gamer Élite</h3>
+    <p>150 puntos</p>
+    <button data-costo="150" data-nombre="Pase Gamer">Canjear</button>
+  </div>
+
+ 
+
+  <div class="mini-card">
+    <h3>🏆 Insignia Maestro</h3>
+    <p>60 puntos</p>
+    <button data-costo="60" data-nombre="Insignia Maestro">Canjear</button>
+  </div>
+
+</div>
+
+<script src="canjear.js"></script>
+
+<script>
+function volverLogin(){
+  window.location.href = "loggin.html"; // cambia si tu archivo tiene otro nombre
+}
+</script>
+
+</body>
+</html>

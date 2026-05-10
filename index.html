@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Login Pro</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI', sans-serif;
+}
+
+body{
+height:100vh;
+background:url("ac.jpg") no-repeat center center/cover;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+/* NAV SUPERIOR */
+.topbar{
+position:absolute;
+top:0;
+left:10;
+width:100%;
+display:flex;
+justify-content:space-between;
+padding:15px 30px;
+color:white;
+font-weight:bold;
+}
+
+.topbar a{
+color:white;
+text-decoration:none;
+cursor:pointer;
+}
+
+/* CARD */
+.card{
+width:350px;
+padding:40px 25px;
+background:rgba(0,0,0,0.4);
+backdrop-filter:blur(10px);
+border-radius:15px;
+text-align:center;
+color:white;
+position:relative;
+}
+
+/* LOGO */
+.logo{
+position:absolute;
+top:-50px;
+left:50%;
+transform:translateX(-50%);
+}
+
+.logo img{
+width:90px;
+height:90px;
+border-radius:50%;
+border:4px solid white;
+}
+
+/* TITULO */
+h2{
+margin-top:40px;
+margin-bottom:20px;
+}
+
+/* INPUTS */
+.input-box{
+position:relative;
+margin:15px 0;
+}
+
+.input-box input{
+width:100%;
+padding:12px 40px;
+border:none;
+border-radius:6px;
+outline:none;
+}
+
+.input-box span{
+position:absolute;
+left:10px;
+top:50%;
+transform:translateY(-50%);
+color:#555;
+}
+
+/* BOTON */
+button{
+width:100%;
+padding:12px;
+margin-top:15px;
+border:none;
+background:#ff6a00;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
+
+button:hover{
+background:#ff8c42;
+}
+
+.link{
+margin-top:10px;
+font-size:13px;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="topbar">
+<div>Objetivo 4</div>
+<div><a onclick="mostrarRegistro()">Regístrate</a></div>
+</div>
+
+<!-- LOGIN -->
+<div class="card" id="loginBox">
+
+<div class="logo">
+<img src="Img.jpeg">
+</div>
+
+<h2>Inicio de Sesión</h2>
+
+<div class="input-box">
+<span>👤</span>
+<input id="loginEmail" type="email" placeholder="Correo">
+</div>
+
+<div class="input-box">
+<span>🔑</span>
+<input id="loginPass" type="password" placeholder="Contraseña">
+</div>
+
+
+<button onclick="login()">Iniciar Sesión</button>
+
+</div>
+
+<!-- REGISTRO -->
+<div class="card" id="registerBox" style="display:none;">
+
+<div class="logo">
+<img src="Img.jpeg">
+</div>
+
+<h2>Registro</h2>
+
+<div class="input-box">
+<span>📧</span>
+<input id="regEmail" type="email" placeholder="Correo">
+</div>
+
+<div class="input-box">
+<span>🔒</span>
+<input id="regPass" type="password" placeholder="Contraseña">
+</div>
+
+  <div id="validaciones" style="text-align:left; font-size:13px; margin-top:5px;">
+  <div id="v1">❌ Mínimo 6 caracteres</div>
+  <div id="v2">❌ Una mayúscula</div>
+  <div id="v3">❌ Un número</div>
+  <div id="v4">❌ Un carácter especial</div>
+</div>
+
+<button onclick="registro()">Crear Cuenta</button>
+
+<div class="link" onclick="mostrarLogin()">Ya tengo cuenta</div>
+
+</div>
+
+<!-- FIREBASE -->
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+getAuth,
+createUserWithEmailAndPassword,
+signInWithEmailAndPassword,
+sendEmailVerification,
+sendPasswordResetEmail
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDSExbNQt2glE3uPIYIESbpR-WMyG2ts0M",
+  authDomain: "act23-547b9.firebaseapp.com",
+  projectId: "act23-547b9",
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+/* CAMBIOS */
+window.mostrarRegistro = ()=>{
+document.getElementById("loginBox").style.display="none";
+document.getElementById("registerBox").style.display="block";
+}
+
+window.mostrarLogin = ()=>{
+document.getElementById("loginBox").style.display="block";
+document.getElementById("registerBox").style.display="none";
+}
+
+/* REGISTRO CON VERIFICACIÓN */
+window.registro = async ()=>{
+
+let email = document.getElementById("regEmail").value;
+let pass = document.getElementById("regPass").value;
+
+// VALIDACIÓN FINAL
+const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$/;
+
+if(!regex.test(pass)){
+alert("❌ La contraseña no cumple los requisitos");
+return;
+}
+
+try{
+let userCred = await createUserWithEmailAndPassword(auth,email,pass);
+
+await sendEmailVerification(userCred.user);
+
+alert("📩 Revisa tu correo para verificar tu cuenta");
+
+}catch(e){
+alert(e.message);
+}
+
+}
+  const passInput = document.getElementById("regPass");
+
+passInput.addEventListener("input", ()=>{
+
+let val = passInput.value;
+
+// reglas
+let min = val.length >= 6;
+let mayus = /[A-Z]/.test(val);
+let num = /\d/.test(val);
+let esp = /[\W_]/.test(val);
+
+// actualizar UI
+actualizar("v1", min);
+actualizar("v2", mayus);
+actualizar("v3", num);
+actualizar("v4", esp);
+
+});
+
+function actualizar(id, cumple){
+let el = document.getElementById(id);
+
+if(cumple){
+el.innerHTML = "✅ " + el.innerHTML.replace("❌ ","").replace("✅ ","");
+el.style.color = "#00e676";
+}else{
+el.innerHTML = "❌ " + el.innerHTML.replace("❌ ","").replace("✅ ","");
+el.style.color = "#ff5252";
+}
+}
+
+/* LOGIN */
+window.login = async ()=>{
+
+let email = document.getElementById("loginEmail").value;
+let pass = document.getElementById("loginPass").value;
+
+try{
+let userCred = await signInWithEmailAndPassword(auth,email,pass);
+
+// verificar si confirmó correo
+if(!userCred.user.emailVerified){
+alert("⚠️ Debes verificar tu correo primero");
+return;
+}
+
+alert("✅ Bienvenido");
+
+// redirigir
+window.location.href="loggin.html";
+
+}catch(e){
+alert("Error: " + e.message);
+}
+
+}
+
+</script>
+
+</body>
+</html>
