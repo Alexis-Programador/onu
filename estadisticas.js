@@ -39,29 +39,45 @@ let mejores = [];
 
 let peores = [];
 
-/* GENERAR ESTADISTICAS REALES */
+/* RECORRER MATERIAS */
 
 materias.forEach(materia=>{
 
-/* LEER DATOS */
+/* BUSCAR DATOS EN MAYUS Y MINUS */
 
 const correctas =
 
 parseInt(
+
 localStorage.getItem(
 materia + "_correctas"
 )
+
+||
+
+localStorage.getItem(
+materia.toLowerCase() + "_correctas"
+)
+
 ) || 0;
 
 const incorrectas =
 
 parseInt(
+
 localStorage.getItem(
 materia + "_incorrectas"
 )
+
+||
+
+localStorage.getItem(
+materia.toLowerCase() + "_incorrectas"
+)
+
 ) || 0;
 
-/* TOTAL RESPUESTAS */
+/* TOTAL */
 
 const total =
 
@@ -116,7 +132,7 @@ materiasStats.innerHTML +=
 
 <span>
 
-${materia.toUpperCase()}
+${materia}
 
 </span>
 
@@ -156,7 +172,7 @@ ${incorrectas}
 
 });
 
-/* PROMEDIO GENERAL */
+/* PROMEDIO */
 
 const promedio =
 
@@ -165,7 +181,7 @@ totalPorcentaje /
 materias.length
 );
 
-/* TEXTO CIRCULO */
+/* TEXTO */
 
 porcentajeHTML.textContent =
 `${promedio}%`;
@@ -213,7 +229,7 @@ ${peores.join(", ")}.`;
 
 }
 
-/* SI NO HAY DATOS */
+/* SIN DATOS */
 
 if(
 mejores.length === 0
