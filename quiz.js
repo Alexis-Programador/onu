@@ -65,9 +65,15 @@ let vidas = 3;
 
 let respondido = false;
 
-/* EVITAR DUPLICAR PUNTOS */
-
 let puntosGuardados = false;
+
+/* MATERIA */
+
+let materiaActual =
+
+localStorage.getItem(
+"materiaActual"
+) || "matemáticas";
 
 /* VIDAS */
 
@@ -111,7 +117,8 @@ function cargarPregunta(){
 
     respondido = false;
 
-    feedback.style.display = "none";
+    feedback.style.display =
+    "none";
 
     const actual =
     preguntas[preguntaActual];
@@ -124,7 +131,7 @@ function cargarPregunta(){
 
     opcionesHTML.innerHTML = "";
 
-    /* MEZCLAR OPCIONES */
+    /* MEZCLAR */
 
     const opcionesMezcladas =
 
@@ -150,6 +157,26 @@ function cargarPregunta(){
             /* CORRECTA */
 
             if(opcion === actual.correcta){
+
+                /* GUARDAR CORRECTAS */
+
+                let correctas =
+
+                parseInt(
+                localStorage.getItem(
+                materiaActual + "_correctas"
+                )
+                ) || 0;
+
+                correctas++;
+
+                localStorage.setItem(
+
+                materiaActual + "_correctas",
+
+                correctas
+
+                );
 
                 boton.style.background =
                 "#10b981";
@@ -178,6 +205,26 @@ function cargarPregunta(){
             /* INCORRECTA */
 
             else{
+
+                /* GUARDAR INCORRECTAS */
+
+                let incorrectas =
+
+                parseInt(
+                localStorage.getItem(
+                materiaActual + "_incorrectas"
+                )
+                ) || 0;
+
+                incorrectas++;
+
+                localStorage.setItem(
+
+                materiaActual + "_incorrectas",
+
+                incorrectas
+
+                );
 
                 vidas--;
 
@@ -223,7 +270,7 @@ function cargarPregunta(){
 
                 });
 
-                /* SIN VIDAS */
+                /* GAME OVER */
 
                 if(vidas <= 0){
 
@@ -257,8 +304,6 @@ nextBtn.addEventListener("click", ()=>{
 
     preguntaActual++;
 
-    /* TERMINO QUIZ */
-
     if(
         preguntaActual >= preguntas.length
     ){
@@ -272,7 +317,7 @@ nextBtn.addEventListener("click", ()=>{
 
 });
 
-/* TERMINAR QUIZ */
+/* TERMINAR */
 
 function terminarQuiz(gano){
 
@@ -281,24 +326,24 @@ function terminarQuiz(gano){
     feedback.style.display =
     "block";
 
-    /* SI GANO */
+    /* SI GANA */
 
     if(gano){
 
-         /* MARCAR QUIZ COMPLETADO */
+        /* MARCAR QUIZ COMPLETADO */
 
-    localStorage.setItem(
-    "quizCompletado",
-    "true"
-    );
-        
+        localStorage.setItem(
+        "quizCompletado",
+        "true"
+        );
+
         let puntosActuales =
 
         parseInt(
         localStorage.getItem("puntos")
         ) || 0;
 
-        /* GUARDAR SOLO UNA VEZ */
+        /* GUARDAR PUNTOS */
 
         if(!puntosGuardados){
 
