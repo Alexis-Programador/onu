@@ -107,6 +107,14 @@ let respondido = false;
 
 let puntosGuardados = false;
 
+/* MATERIA */
+
+let materiaActual =
+
+localStorage.getItem(
+"materiaActual"
+) || "inglés";
+
 /* VIDAS */
 
 function actualizarVidas(){
@@ -187,6 +195,26 @@ function cargarPregunta(){
 
             if(opcion === actual.correcta){
 
+                /* GUARDAR CORRECTAS */
+
+                let correctas =
+
+                parseInt(
+                localStorage.getItem(
+                materiaActual + "_correctas"
+                )
+                ) || 0;
+
+                correctas++;
+
+                localStorage.setItem(
+
+                materiaActual + "_correctas",
+
+                correctas
+
+                );
+
                 boton.style.background =
                 "#10b981";
 
@@ -215,6 +243,26 @@ function cargarPregunta(){
 
             else{
 
+                /* GUARDAR INCORRECTAS */
+
+                let incorrectas =
+
+                parseInt(
+                localStorage.getItem(
+                materiaActual + "_incorrectas"
+                )
+                ) || 0;
+
+                incorrectas++;
+
+                localStorage.setItem(
+
+                materiaActual + "_incorrectas",
+
+                incorrectas
+
+                );
+
                 vidas--;
 
                 actualizarVidas();
@@ -237,6 +285,8 @@ function cargarPregunta(){
                 feedback.style.color =
                 "#991b1b";
 
+                /* MOSTRAR CORRECTA */
+
                 const botones =
                 document.querySelectorAll(".option");
 
@@ -256,6 +306,8 @@ function cargarPregunta(){
                     }
 
                 });
+
+                /* GAME OVER */
 
                 if(vidas <= 0){
 
@@ -281,7 +333,7 @@ function cargarPregunta(){
 
 }
 
-/* CONTINUE */
+/* CONTINUAR */
 
 nextBtn.addEventListener("click", ()=>{
 
@@ -311,20 +363,24 @@ function terminarQuiz(gano){
     feedback.style.display =
     "block";
 
+    /* SI GANA */
+
     if(gano){
 
-         /* MARCAR QUIZ COMPLETADO */
+        /* MARCAR QUIZ */
 
-    localStorage.setItem(
-    "quizCompletado",
-    "true"
-    );
-        
+        localStorage.setItem(
+        "quizCompletado",
+        "true"
+        );
+
         let puntosActuales =
 
         parseInt(
         localStorage.getItem("puntos")
         ) || 0;
+
+        /* GUARDAR PUNTOS */
 
         if(!puntosGuardados){
 
@@ -359,6 +415,8 @@ function terminarQuiz(gano){
 
     }
 
+    /* SI PIERDE */
+
     else{
 
         preguntaTexto.textContent =
@@ -374,6 +432,8 @@ function terminarQuiz(gano){
         "#991b1b";
 
     }
+
+    /* BOTON FINAL */
 
     nextBtn.innerHTML =
     "🏠 Return to Home";
