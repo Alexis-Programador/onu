@@ -106,8 +106,8 @@ button:hover{background:#ff8c42;}
 
 <button onclick="login()">Iniciar Sesión</button>
 
-<button onclick="recuperarPassword()" style="background:#555;">
-Cambiar Contraseña
+<button onclick="mostrarAvisoRecuperacion()" style="background:#555;">
+    Cambiar Contraseña
 </button>
 </div>
 
@@ -144,6 +144,7 @@ Aviso de Privacidad
 </a>
 </div>
 
+
 <div class="link" onclick="mostrarLogin()">Ya tengo cuenta</div>
 </div>
 
@@ -156,6 +157,110 @@ Aviso de Privacidad
 <p>Al registrarse acepta este aviso de privacidad.</p>
 <button onclick="cerrarAviso()">Cerrar</button>
 </div>
+</div>
+  <!-- AVISO PRIVACIDAD RECUPERACIÓN -->
+<div id="avisoRecuperacion" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.7);
+justify-content:center;
+align-items:center;
+z-index:10000;
+">
+
+<div style="
+background:white;
+color:black;
+width:90%;
+max-width:600px;
+padding:25px;
+border-radius:10px;
+max-height:80vh;
+overflow:auto;
+">                                            
+
+<h2>Aviso de Privacidad</h2>
+
+<p>
+Los datos personales proporcionados por los usuarios, incluyendo el correo electrónico,
+serán utilizados exclusivamente para la administración y recuperación de cuentas.
+</p>
+
+<p>
+La información será tratada de forma confidencial y protegida mediante medidas de seguridad adecuadas.
+</p>
+
+<p>
+Al continuar, usted acepta el tratamiento de sus datos para el proceso de recuperación de contraseña.
+</p>
+
+<button onclick="aceptarAvisoRecuperacion()">
+Aceptar
+</button>
+
+<button onclick="cerrarAvisoRecuperacion()" style="background:#666;">
+Cancelar
+</button>
+
+</div>
+</div>
+<!-- MODAL RECUPERAR CONTRASEÑA -->
+<div id="modalRecuperar" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.7);
+justify-content:center;
+align-items:center;
+z-index:10001;
+">
+
+<div style="
+background:white;
+color:black;
+width:90%;
+max-width:500px;
+padding:25px;
+border-radius:10px;
+text-align:center;
+">
+
+<h2>Recuperación de Contraseña</h2>
+
+<p>
+Por favor ingrese el correo electrónico asociado a su cuenta.
+</p>
+
+<input
+type="email"
+id="correoRecuperacion"
+placeholder="Correo electrónico"
+style="
+width:100%;
+padding:12px;
+margin-top:10px;
+margin-bottom:15px;
+border:1px solid #ccc;
+border-radius:6px;
+">
+
+<button onclick="enviarRecuperacion()">
+Enviar enlace de recuperación
+</button>
+
+<button onclick="cerrarModalRecuperacion()" style="background:#666;">
+Cancelar
+</button>
+
+</div>
+
 </div>
 
 <script type="module">
@@ -178,13 +283,13 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 window.mostrarRegistro=()=>{
-loginBox.style.display="none";
-registerBox.style.display="block";
+document.getElementById("loginBox").style.display="none";
+document.getElementById("registerBox").style.display="block";
 }
 
 window.mostrarLogin=()=>{
-loginBox.style.display="block";
-registerBox.style.display="none";
+document.getElementById("loginBox").style.display="block";
+document.getElementById("registerBox").style.display="none";
 }
 
 window.mostrarAviso=()=>{
@@ -196,8 +301,8 @@ document.getElementById("avisoModal").style.display="none";
 }
 
 window.registro=async()=>{
-let email=regEmail.value;
-let pass=regPass.value;
+    let email = document.getElementById("regEmail").value;
+    let pass = document.getElementById("regPass").value;
 
 const regex=/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$/;
 
@@ -214,7 +319,8 @@ mostrarLogin();
 }catch(e){
 alert(e.message);
 }
-}
+}                            
+                                               
 
 const passInput=document.getElementById("regPass");
 
@@ -256,52 +362,50 @@ window.location.href="loggin.html";
 alert("Error: "+e.message);
 }
 }
-window.recuperarPassword = async ()=>{
+window.mostrarAvisoRecuperacion = ()=>{
+document.getElementById("avisoRecuperacion").style.display="flex";
+}
 
-alert(
-"Estimado usuario:\n\n" +
-"Por motivos de seguridad, el restablecimiento de contraseña se realiza mediante verificación de correo electrónico.\n\n" +
-"Por favor, proporcione la dirección de correo asociada a su cuenta para recibir un enlace seguro de recuperación."
-);
+window.cerrarAvisoRecuperacion = ()=>{
+document.getElementById("avisoRecuperacion").style.display="none";
+}
 
-let email = prompt(
-"Correo electrónico registrado:"
-);
+window.cerrarModalRecuperacion = ()=>{
+document.getElementById("modalRecuperar").style.display="none";
+}
 
-if(!email){
-alert("Operación cancelada.");
+window.aceptarAvisoRecuperacion = ()=>{
+document.getElementById("avisoRecuperacion").style.display="none";
+document.getElementById("modalRecuperar").style.display="flex";
+}
+window.enviarRecuperacion = async ()=>{
+
+let email =
+document.getElementById("correoRecuperacion").value;
+
+if(email==""){
+alert("Ingrese un correo electrónico.");
 return;
 }
 
 try{
 
-await sendPasswordResetEmail(auth,email);
+    await sendPasswordResetEmail(auth,email);
 
 alert(
-"📩 Solicitud procesada correctamente.\n\n" +
-"Se ha enviado un enlace seguro para restablecer su contraseña.\n\n" +
-"Revise su bandeja de entrada y, en caso necesario, la carpeta de correo no deseado."
+"📩 Se ha enviado un enlace seguro para restablecer su contraseña."
 );
+
+window.cerrarModalRecuperacion();
 
 }catch(e){
 
-alert(
-"❌ No fue posible enviar el correo de recuperación.\n\n" +
-"Verifique que la dirección de correo sea correcta e inténtelo nuevamente."
-);
+alert("Error: " + e.message);
 
 }
 
 }
 
-/* AVISO PRIVACIDAD */
-window.mostrarAviso = ()=>{
-document.getElementById("avisoModal").style.display="flex";
-}
-
-window.cerrarAviso = ()=>{
-document.getElementById("avisoModal").style.display="none";
-}
 </script>
 
 </body>
