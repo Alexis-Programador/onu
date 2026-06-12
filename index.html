@@ -6,7 +6,13 @@
 <title>Login Pro</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
 body{
 height:100vh;
 background:url("ac.jpg") no-repeat center center/cover;
@@ -14,6 +20,7 @@ display:flex;
 justify-content:center;
 align-items:center;
 }
+
 .topbar{
 position:absolute;
 top:0;
@@ -25,7 +32,13 @@ padding:15px 30px;
 color:white;
 font-weight:bold;
 }
-.topbar a{color:white;text-decoration:none;cursor:pointer;}
+
+.topbar a{
+color:white;
+text-decoration:none;
+cursor:pointer;
+}
+
 .card{
 width:350px;
 padding:40px 25px;
@@ -36,27 +49,45 @@ text-align:center;
 color:white;
 position:relative;
 }
+
 .logo{
 position:absolute;
 top:-50px;
 left:50%;
 transform:translateX(-50%);
 }
+
 .logo img{
 width:90px;
 height:90px;
 border-radius:50%;
 border:4px solid white;
 }
-h2{margin-top:40px;margin-bottom:20px;}
-.input-box{position:relative;margin:15px 0;}
-.input-box input{
+
+h1{
+margin-top:40px;
+font-size:22px;
+}
+
+h2{
+margin-top:20px;
+margin-bottom:20px;
+}
+
+.input-box{
+position:relative;
+margin:15px 0;
+}
+
+.input-box input,
+.input-box select{
 width:100%;
 padding:12px 40px;
 border:none;
 border-radius:6px;
 outline:none;
 }
+
 .input-box span{
 position:absolute;
 left:10px;
@@ -64,6 +95,7 @@ top:50%;
 transform:translateY(-50%);
 color:#555;
 }
+
 button{
 width:100%;
 padding:12px;
@@ -74,8 +106,16 @@ color:white;
 border-radius:6px;
 cursor:pointer;
 }
-button:hover{background:#ff8c42;}
-.link{margin-top:10px;font-size:13px;cursor:pointer;}
+
+button:hover{
+background:#ff8c42;
+}
+
+.link{
+margin-top:10px;
+font-size:13px;
+cursor:pointer;
+}
 </style>
 </head>
 
@@ -83,10 +123,16 @@ button:hover{background:#ff8c42;}
 
 <div class="topbar">
 <div>Objetivo 4</div>
-<div><a onclick="mostrarRegistro()">Regístrate</a></div>
+<div>
+<a onclick="mostrarRegistro()">
+Regístrate
+</a>
+</div>
 </div>
 
+<!-- LOGIN -->
 <div class="card" id="loginBox">
+
 <div class="logo">
 <img src="Img.jpeg">
 </div>
@@ -104,19 +150,49 @@ button:hover{background:#ff8c42;}
 <input id="loginPass" type="password" placeholder="Contraseña">
 </div>
 
-<button onclick="login()">Iniciar Sesión</button>
+<button onclick="login()">
+Iniciar Sesión
+</button>
 
 <button onclick="mostrarAvisoRecuperacion()" style="background:#555;">
-    Cambiar Contraseña
+Cambiar Contraseña
 </button>
+
 </div>
 
+<!-- REGISTRO -->
 <div class="card" id="registerBox" style="display:none;">
+
 <div class="logo">
 <img src="Img.jpeg">
 </div>
 
 <h2>Registro</h2>
+
+<div class="input-box">
+<span>👤</span>
+<input id="regNombre" type="text" placeholder="Nombre">
+</div>
+
+<div class="input-box">
+<span>👤</span>
+<input id="regApellido" type="text" placeholder="Apellido">
+</div>
+
+<div class="input-box">
+<span>🎂</span>
+<input id="regEdad" type="number" placeholder="Edad">
+</div>
+
+<div class="input-box">
+<span>⚧</span>
+<select id="regGenero">
+<option value="">Seleccione género</option>
+<option value="Masculino">Masculino</option>
+<option value="Femenino">Femenino</option>
+<option value="Otro">Otro</option>
+</select>
+</div>
 
 <div class="input-box">
 <span>📧</span>
@@ -135,31 +211,28 @@ button:hover{background:#ff8c42;}
 <div id="v4">❌ Un carácter especial</div>
 </div>
 
-<button onclick="registro()">Crear Cuenta</button>
+<button onclick="registro()">
+Crear Cuenta
+</button>
 
 <div style="margin-top:15px;font-size:12px;">
 Al registrarte aceptas nuestro
-<a href="#" onclick="mostrarAviso()" style="color:#4fc3f7;">
+
+<a href="#"
+onclick="mostrarAviso()"
+style="color:#4fc3f7;">
 Aviso de Privacidad
 </a>
 </div>
 
-
-<div class="link" onclick="mostrarLogin()">Ya tengo cuenta</div>
+<div class="link" onclick="mostrarLogin()">
+Ya tengo cuenta
 </div>
 
-<div id="avisoModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);justify-content:center;align-items:center;z-index:9999;">
-<div style="background:white;color:black;width:80%;max-width:600px;padding:20px;border-radius:10px;max-height:80vh;overflow:auto;">
-<h2>Aviso de Privacidad</h2>
-<p>Los datos personales proporcionados serán utilizados únicamente para la administración de cuentas de usuario.</p>
-<p>La información recopilada como correo electrónico será tratada de manera confidencial.</p>
-<p>Los usuarios pueden solicitar la eliminación de sus datos cuando lo deseen.</p>
-<p>Al registrarse acepta este aviso de privacidad.</p>
-<button onclick="cerrarAviso()">Cerrar</button>
 </div>
-</div>
-  <!-- AVISO PRIVACIDAD RECUPERACIÓN -->
-<div id="avisoRecuperacion" style="
+
+<!-- AVISO PRIVACIDAD -->
+<div id="avisoModal" style="
 display:none;
 position:fixed;
 top:0;
@@ -169,118 +242,70 @@ height:100%;
 background:rgba(0,0,0,.7);
 justify-content:center;
 align-items:center;
-z-index:10000;
+z-index:9999;
 ">
 
 <div style="
 background:white;
 color:black;
-width:90%;
+width:80%;
 max-width:600px;
-padding:25px;
+padding:20px;
 border-radius:10px;
 max-height:80vh;
 overflow:auto;
-">                                            
+">
 
 <h2>Aviso de Privacidad</h2>
 
 <p>
-Los datos personales proporcionados por los usuarios, incluyendo el correo electrónico,
-serán utilizados exclusivamente para la administración y recuperación de cuentas.
+Los datos personales proporcionados serán utilizados únicamente para la administración de cuentas.
 </p>
 
-<p>
-La información será tratada de forma confidencial y protegida mediante medidas de seguridad adecuadas.
-</p>
-
-<p>
-Al continuar, usted acepta el tratamiento de sus datos para el proceso de recuperación de contraseña.
-</p>
-
-<button onclick="aceptarAvisoRecuperacion()">
-Aceptar
-</button>
-
-<button onclick="cerrarAvisoRecuperacion()" style="background:#666;">
-Cancelar
+<button onclick="cerrarAviso()">
+Cerrar
 </button>
 
 </div>
-</div>
-<!-- MODAL RECUPERAR CONTRASEÑA -->
-<div id="modalRecuperar" style="
-display:none;
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,.7);
-justify-content:center;
-align-items:center;
-z-index:10001;
-">
-
-<div style="
-background:white;
-color:black;
-width:90%;
-max-width:500px;
-padding:25px;
-border-radius:10px;
-text-align:center;
-">
-
-<h2>Recuperación de Contraseña</h2>
-
-<p>
-Por favor ingrese el correo electrónico asociado a su cuenta.
-</p>
-
-<input
-type="email"
-id="correoRecuperacion"
-placeholder="Correo electrónico"
-style="
-width:100%;
-padding:12px;
-margin-top:10px;
-margin-bottom:15px;
-border:1px solid #ccc;
-border-radius:6px;
-">
-
-<button onclick="enviarRecuperacion()">
-Enviar enlace de recuperación
-</button>
-
-<button onclick="cerrarModalRecuperacion()" style="background:#666;">
-Cancelar
-</button>
-
-</div>
-
 </div>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+initializeApp
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
 import {
 getAuth,
 createUserWithEmailAndPassword,
 signInWithEmailAndPassword,
 sendEmailVerification,
 sendPasswordResetEmail
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+getFirestore,
+doc,
+setDoc
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
+
 apiKey: "AIzaSyDSExbNQt2glE3uPIYIESbpR-WMyG2ts0M",
 authDomain: "act23-547b9.firebaseapp.com",
 projectId: "act23-547b9",
+storageBucket: "act23-547b9.firebasestorage.app",
+messagingSenderId: "329465558346",
+appId: "1:329465558346:web:0f7667ed31a03c0589fdb3"
+
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
 window.mostrarRegistro=()=>{
 document.getElementById("loginBox").style.display="none";
@@ -301,109 +326,154 @@ document.getElementById("avisoModal").style.display="none";
 }
 
 window.registro=async()=>{
-    let email = document.getElementById("regEmail").value;
-    let pass = document.getElementById("regPass").value;
 
-const regex=/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$/;
+let nombre=document.getElementById("regNombre").value.trim();
+let apellido=document.getElementById("regApellido").value.trim();
+let edad=document.getElementById("regEdad").value.trim();
+let genero=document.getElementById("regGenero").value;
+let email=document.getElementById("regEmail").value.trim();
+let pass=document.getElementById("regPass").value;
+
+const regex=
+/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$/;
+
+if(
+!nombre ||
+!apellido ||
+!edad ||
+!genero ||
+!email ||
+!pass
+){
+alert("❌ Complete todos los campos");
+return;
+}
 
 if(!regex.test(pass)){
-alert("❌ La contraseña no cumple los requisitos");
+alert("❌ Contraseña insegura");
 return;
 }
 
 try{
-let userCred=await createUserWithEmailAndPassword(auth,email,pass);
+
+const userCred =
+await createUserWithEmailAndPassword(
+auth,
+email,
+pass
+);
+
 await sendEmailVerification(userCred.user);
-alert("📩 Revisa tu correo para verificar tu cuenta");
-mostrarLogin();
-}catch(e){
-alert(e.message);
+
+await setDoc(
+doc(db,"usuarios",userCred.user.uid),
+{
+nombre,
+apellido,
+edad:Number(edad),
+genero,
+correo:email,
+uid:userCred.user.uid,
+fechaRegistro:new Date()
 }
-}                            
-                                               
+);
 
-const passInput=document.getElementById("regPass");
+alert("✅ Cuenta creada. Verifica tu correo.");
 
-passInput.addEventListener("input",()=>{
-let val=passInput.value;
-actualizar("v1",val.length>=6);
-actualizar("v2",/[A-Z]/.test(val));
-actualizar("v3",/\d/.test(val));
-actualizar("v4",/[\W_]/.test(val));
-});
+mostrarLogin();
 
-function actualizar(id,cumple){
-let el=document.getElementById(id);
-if(cumple){
-el.innerHTML="✅ "+el.innerHTML.replace("❌ ","").replace("✅ ","");
-el.style.color="#00e676";
-}else{
-el.innerHTML="❌ "+el.innerHTML.replace("❌ ","").replace("✅ ","");
-el.style.color="#ff5252";
+}catch(e){
+
+alert(e.message);
+
 }
 }
 
 window.login=async()=>{
+
 let email=loginEmail.value;
 let pass=loginPass.value;
 
 try{
-let userCred=await signInWithEmailAndPassword(auth,email,pass);
+
+let userCred=
+await signInWithEmailAndPassword(
+auth,
+email,
+pass
+);
 
 if(!userCred.user.emailVerified){
-alert("⚠️ Debes verificar tu correo primero");
+alert("⚠️ Verifica tu correo");
 return;
 }
 
 alert("✅ Bienvenido");
+
 window.location.href="loggin.html";
-
-}catch(e){
-alert("Error: "+e.message);
-}
-}
-window.mostrarAvisoRecuperacion = ()=>{
-document.getElementById("avisoRecuperacion").style.display="flex";
-}
-
-window.cerrarAvisoRecuperacion = ()=>{
-document.getElementById("avisoRecuperacion").style.display="none";
-}
-
-window.cerrarModalRecuperacion = ()=>{
-document.getElementById("modalRecuperar").style.display="none";
-}
-
-window.aceptarAvisoRecuperacion = ()=>{
-document.getElementById("avisoRecuperacion").style.display="none";
-document.getElementById("modalRecuperar").style.display="flex";
-}
-window.enviarRecuperacion = async ()=>{
-
-let email =
-document.getElementById("correoRecuperacion").value;
-
-if(email==""){
-alert("Ingrese un correo electrónico.");
-return;
-}
-
-try{
-
-    await sendPasswordResetEmail(auth,email);
-
-alert(
-"📩 Se ha enviado un enlace seguro para restablecer su contraseña."
-);
-
-window.cerrarModalRecuperacion();
 
 }catch(e){
 
 alert("Error: " + e.message);
 
 }
+}
 
+window.mostrarAvisoRecuperacion=()=>{
+
+let correo=prompt(
+"Ingrese su correo electrónico:"
+);
+
+if(!correo) return;
+
+sendPasswordResetEmail(auth,correo)
+.then(()=>{
+alert("📩 Correo enviado");
+})
+.catch((e)=>{
+alert(e.message);
+});
+
+}
+
+const passInput =
+document.getElementById("regPass");
+
+passInput.addEventListener("input",()=>{
+
+let val=passInput.value;
+
+actualizar("v1",val.length>=6);
+actualizar("v2",/[A-Z]/.test(val));
+actualizar("v3",/\d/.test(val));
+actualizar("v4",/[\W_]/.test(val));
+
+});
+
+function actualizar(id,cumple){
+
+let el=document.getElementById(id);
+
+if(cumple){
+el.innerHTML=
+"✅ " +
+el.innerHTML
+.replace("❌ ","")
+.replace("✅ ","");
+
+el.style.color="#00e676";
+
+}else{
+
+el.innerHTML=
+"❌ " +
+el.innerHTML
+.replace("❌ ","")
+.replace("✅ ","");
+
+el.style.color="#ff5252";
+}
 }
 
 </script>
