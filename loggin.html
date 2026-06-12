@@ -1,431 +1,451 @@
 <!DOCTYPE html>
 <html lang="es">
-
+ 
 <head>
-
+ 
 <meta charset="UTF-8">
-
+ 
 <meta name="viewport"
 content="width=device-width, initial-scale=1">
-
+ 
 <title>Sumando el Aprendizaje</title>
-
+ 
 <link rel="stylesheet" href="styles.css">
-
+ 
 </head>
-
+ 
 <body>
-
+ 
 <!-- HEADER -->
-
+ 
 <header>
-
+ 
     <div class="logo">
-
+ 
         <img src="Img.jpeg" alt="Logo">
-
+ 
     </div>
-
+ 
     <h1>📚 Sumando el Aprendizaje</h1>
-
+ 
     <p>
         Disciplina diaria = grandes resultados 🚀
     </p>
-
+ 
     <p id="frase">
-
+ 
         Cargando frase...
-
+ 
     </p>
-
+ 
 </header>
-
+ 
+<!-- BOTON CERRAR SESION -->
+<button id="btnCerrarSesion" class="btn-cerrar">
+    🚪 Cerrar Sesión
+</button>
+ 
+<!-- MODAL CARGANDO -->
+<div id="modalCerrar" class="modal-cerrar">
+ 
+    <div class="modal-contenido">
+ 
+        <div class="loader"></div>
+ 
+        <h2>Cerrando sesión...</h2>
+ 
+        <p>Guardando datos...</p>
+ 
+    </div>
+ 
+</div>
+ 
 <!-- CONTENEDOR -->
-
+ 
 <div class="container">
-
+ 
     <!-- IZQUIERDA -->
-
+ 
     <div class="left">
-
+ 
         <!-- MATERIAS -->
-
+ 
         <div class="card">
-
+ 
             <h2>📘 Materias del Día</h2>
-
+ 
             <!-- PROGRESO -->
-
+ 
             <div class="progress-bar">
-
+ 
                 <div id="progress"></div>
-
+ 
             </div>
-
+ 
             <!-- MATERIAS -->
-
+ 
             <div class="subjects">
-
+ 
                 <div class="subject"
                 data-materia="Matemáticas">
-
+ 
                     Matemáticas
-
+ 
                 </div>
-
+ 
                 <div class="subject"
                 data-materia="Español">
-
+ 
                     Español
-
+ 
                 </div>
-
+ 
                 <div class="subject"
                 data-materia="Inglés">
-
+ 
                     Inglés
-
+ 
                 </div>
-
+ 
                 <div class="subject"
                 data-materia="Historia">
-
+ 
                     Historia
-
+ 
                 </div>
-
+ 
                 <div class="subject"
                 data-materia="Programación">
-
+ 
                     Programación
-
+ 
                 </div>
-
+ 
                 <div class="subject"
                 data-materia="Ciencias">
-
+ 
                     Ciencias
-
+ 
                 </div>
-
+ 
             </div>
-
+ 
         </div>
-
+ 
         <!-- INFORMACIÓN -->
-
+ 
         <div class="info-card">
-
+ 
             <h2>
-
+ 
                 📘 ¿Qué tiene de bueno aprender?
-
+ 
             </h2>
-
+ 
             <p>
-
+ 
             Aprender nos ayuda a crecer,
             mejorar nuestras habilidades
             y alcanzar metas importantes.
-
+ 
             Cada cosa nueva que estudias
             fortalece tu mente, aumenta
             tu creatividad y te prepara
             para el futuro.
-
+ 
             El conocimiento abre
             oportunidades, mejora la
             confianza y permite resolver
             problemas con más facilidad.
-
+ 
             Estudiar un poco cada día
             puede crear grandes cambios
             con el tiempo 🚀
-
+ 
             </p>
-
+ 
         </div>
-
+ 
     </div>
-
+ 
     <!-- DERECHA -->
-
+ 
     <div class="right">
-
+ 
         <!-- CALENDARIO -->
-
+ 
         <div class="card">
-
+ 
             <h2>📅 Calendario</h2>
-
+ 
             <div id="calendar"></div>
-
+ 
         </div>
-
+ 
         <!-- PUNTOS -->
-
+ 
         <div class="card">
-
+ 
             <h2>⭐ Puntuación</h2>
-
+ 
             <!-- RACHA -->
-
+ 
             <div class="streak-box">
-
+ 
                 🔥 Racha:
                 <span id="racha">
-
+ 
                 0
-
+ 
                 </span>
-
+ 
                 días
-
+ 
             </div>
-
+ 
             <!-- PUNTOS -->
-
+ 
             <div class="score-box">
-
+ 
                 <p>
-
+ 
                 Puntos actuales:
                 <span id="points">0</span>
-
+ 
                 </p>
-
+ 
             </div>
-
+ 
             <!-- BOTONES -->
-
+ 
             <div class="buttons-box">
-
+ 
                 <!-- TIENDA -->
-
+ 
                 <a href="canjear.html">
-
+ 
                     <button>
-
+ 
                         🎁 Canjear puntos
-
+ 
                     </button>
-
+ 
                 </a>
-
+ 
                 <!-- ESTADISTICAS -->
-
+ 
                 <a href="estadisticas.html">
-
+ 
                     <button>
-
+ 
                         📊 Ver estadísticas
-
+ 
                     </button>
-
+ 
                 </a>
-
+ 
             </div>
-
+ 
         </div>
-
+ 
     </div>
-
+ 
 </div>
-
+ 
 <!-- BOTON ADMIN -->
-
+ 
 <div class="admin-bottom">
-
+ 
 <button onclick="resetearSistema()">
-
+ 
 🛠 Reiniciar TODO el Sistema
-
+ 
 </button>
-
+ 
 </div>
-
+ 
 <!-- SCRIPT FRASES -->
-
+ 
 <script>
-
+ 
 async function obtenerFrase(){
-
+ 
     try{
-
+ 
         const respuesta =
-
+ 
         await fetch(
         "https://dummyjson.com/quotes/random"
         );
-
+ 
         const data =
         await respuesta.json();
-
+ 
         document
         .getElementById("frase")
         .textContent =
-
+ 
         "💡 " +
         data.quote +
         " — " +
         data.author;
-
+ 
     }
-
+ 
     catch(error){
-
+ 
         document
         .getElementById("frase")
         .textContent =
-
+ 
         "No se pudo cargar la frase.";
-
+ 
     }
-
+ 
 }
-
+ 
 obtenerFrase();
-
+ 
 </script>
-
+ 
 <!-- SCRIPT PRINCIPAL -->
-
+ 
 <script src="script.js"></script>
-
+ 
 <!-- FIREBASE -->
-
+ 
 <script type="module"
 src="firebase.js">
-
+ 
 </script>
-
+ 
 <style>
-
+ 
 /* RACHA */
-
+ 
 .streak-box{
-
+ 
 margin-bottom:20px;
-
+ 
 background:
 linear-gradient(
 135deg,
 #fef3c7,
 #fde68a
 );
-
+ 
 padding:18px;
-
+ 
 border-radius:18px;
-
+ 
 text-align:center;
-
+ 
 font-size:24px;
-
+ 
 font-weight:bold;
-
+ 
 color:#92400e;
-
+ 
 box-shadow:
 0 5px 15px rgba(251,191,36,0.25);
-
+ 
 border:
 2px solid #facc15;
-
+ 
 }
-
+ 
 /* ADMIN ABAJO */
-
+ 
 .admin-bottom{
-
+ 
 display:flex;
-
+ 
 justify-content:center;
-
+ 
 padding:40px 20px;
-
+ 
 }
-
+ 
 .admin-bottom button{
-
+ 
 background:
 linear-gradient(
 135deg,
 #ef4444,
 #dc2626
 );
-
+ 
 color:white;
-
+ 
 border:none;
-
+ 
 padding:18px 30px;
-
+ 
 border-radius:18px;
-
+ 
 font-size:18px;
-
+ 
 font-weight:bold;
-
+ 
 cursor:pointer;
-
+ 
 transition:0.3s;
-
+ 
 box-shadow:
 0 8px 20px rgba(239,68,68,0.25);
-
+ 
 }
-
+ 
 .admin-bottom button:hover{
-
+ 
 transform:scale(1.05);
-
+ 
 background:
 linear-gradient(
 135deg,
 #dc2626,
 #b91c1c
 );
-
+ 
 }
-
+ 
 </style>
-
+ 
 <script>
-
+ 
 /* RESET TOTAL */
-
+ 
 function resetearSistema(){
-
+ 
 const codigo = prompt(
 "🔒 Contraseña admin:"
 );
-
+ 
 if(codigo === null) return;
-
+ 
 /* CONTRASEÑA */
-
+ 
 if(codigo !== "admin123"){
-
+ 
 alert(
 "❌ Contraseña incorrecta"
 );
-
+ 
 return;
-
+ 
 }
-
+ 
 /* BORRAR TODO */
-
+ 
 localStorage.clear();
-
+ 
 /* RECARGAR */
-
+ 
 location.reload();
-
+ 
 }
-
+ 
 </script>
-
+ 
 </body>
 </html>
