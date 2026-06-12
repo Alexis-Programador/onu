@@ -123,6 +123,7 @@ cursor:pointer;
 
 <div class="topbar">
 <div>Objetivo 4</div>
+
 <div>
 <a onclick="mostrarRegistro()">
 Regístrate
@@ -269,6 +270,111 @@ Cerrar
 </div>
 </div>
 
+<!-- MODAL AVISO RECUPERACION -->
+<div id="modalRecuperacion" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.7);
+justify-content:center;
+align-items:center;
+z-index:9999;
+">
+
+<div style="
+background:white;
+color:black;
+width:90%;
+max-width:450px;
+padding:25px;
+border-radius:15px;
+text-align:center;
+">
+
+<h2>🔒 Aviso de Privacidad</h2>
+
+<p style="margin:15px 0;">
+Para recuperar tu contraseña es necesario proporcionar un correo electrónico.
+Tu información será utilizada únicamente para enviar el enlace de recuperación.
+</p>
+
+<div style="display:flex;gap:10px;">
+
+<button onclick="aceptarAvisoRecuperacion()"
+style="background:#28a745;flex:1;">
+Aceptar
+</button>
+
+<button onclick="cerrarAvisoRecuperacion()"
+style="background:#dc3545;flex:1;">
+Cancelar
+</button>
+
+</div>
+</div>
+</div>
+
+<!-- MODAL CORREO -->
+<div id="modalCorreo" style="
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.7);
+justify-content:center;
+align-items:center;
+z-index:9999;
+">
+
+<div style="
+background:white;
+color:black;
+width:90%;
+max-width:400px;
+padding:25px;
+border-radius:15px;
+text-align:center;
+">
+
+<h2>📧 Recuperar Contraseña</h2>
+
+<p style="margin-bottom:15px;">
+Ingrese su correo electrónico
+</p>
+
+<input
+type="email"
+id="correoRecuperacion"
+placeholder="Correo electrónico"
+style="
+width:100%;
+padding:12px;
+border:1px solid #ccc;
+border-radius:8px;
+margin-bottom:15px;
+outline:none;
+">
+
+<div style="display:flex;gap:10px;">
+
+<button onclick="enviarRecuperacion()" style="flex:1;">
+Enviar
+</button>
+
+<button onclick="cerrarCorreoModal()"
+style="background:#555;flex:1;">
+Cancelar
+</button>
+
+</div>
+</div>
+</div>
+
 <script type="module">
 
 import {
@@ -379,13 +485,10 @@ fechaRegistro:new Date()
 );
 
 alert("✅ Cuenta creada. Verifica tu correo.");
-
 mostrarLogin();
 
 }catch(e){
-
 alert(e.message);
-
 }
 }
 
@@ -409,28 +512,68 @@ return;
 }
 
 alert("✅ Bienvenido");
-
 window.location.href="loggin.html";
 
 }catch(e){
-
 alert("Error: " + e.message);
-
 }
 }
 
+/* RECUPERAR CONTRASEÑA */
 window.mostrarAvisoRecuperacion=()=>{
+document.getElementById(
+"modalRecuperacion"
+).style.display="flex";
+}
 
-let correo=prompt(
-"Ingrese su correo electrónico:"
-);
+window.cerrarAvisoRecuperacion=()=>{
+document.getElementById(
+"modalRecuperacion"
+).style.display="none";
+}
 
-if(!correo) return;
+window.aceptarAvisoRecuperacion=()=>{
+document.getElementById(
+"modalRecuperacion"
+).style.display="none";
+
+document.getElementById(
+"modalCorreo"
+).style.display="flex";
+}
+
+window.cerrarCorreoModal=()=>{
+document.getElementById(
+"modalCorreo"
+).style.display="none";
+}
+
+window.enviarRecuperacion=()=>{
+
+let correo=
+document.getElementById(
+"correoRecuperacion"
+).value.trim();
+
+if(!correo){
+alert("❌ Ingresa un correo electrónico");
+return;
+}
 
 sendPasswordResetEmail(auth,correo)
+
 .then(()=>{
 alert("📩 Correo enviado");
+
+document.getElementById(
+"modalCorreo"
+).style.display="none";
+
+document.getElementById(
+"correoRecuperacion"
+).value="";
 })
+
 .catch((e)=>{
 alert(e.message);
 });
@@ -456,6 +599,7 @@ function actualizar(id,cumple){
 let el=document.getElementById(id);
 
 if(cumple){
+
 el.innerHTML=
 "✅ " +
 el.innerHTML
@@ -480,3 +624,4 @@ el.style.color="#ff5252";
 
 </body>
 </html>
+
