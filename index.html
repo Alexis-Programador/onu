@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>iNICIAR SECION</title>
+<title>Login Pro</title>
 
 <style>
 *{
@@ -138,7 +138,7 @@ Regístrate
 <img src="Img.jpeg">
 </div>
 
-<h1>Actualizacion</h1>
+<h1>Nuevo cambio GitHub Flow</h1>
 <h2>Inicio de Sesión</h2>
 
 <div class="input-box">
@@ -396,7 +396,8 @@ getFirestore,
 doc,
 setDoc,
 collection,
-onSnapshot
+onSnapshot,
+getDocs
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -788,6 +789,69 @@ contenedor.innerHTML=
 
 }
 
+/* ==========================
+EXPORTAR USUARIOS A JSON
+========================== */
+
+window.descargarJSON = async () => {
+
+try{
+
+const snapshot = await getDocs(
+collection(db,"usuarios")
+);
+
+const usuarios = [];
+
+snapshot.forEach((docu)=>{
+
+usuarios.push({
+id: docu.id,
+...docu.data()
+});
+
+});
+
+const json =
+JSON.stringify(
+usuarios,
+null,
+2
+);
+
+const blob = new Blob(
+[json],
+{
+type:"application/json"
+}
+);
+
+const url =
+URL.createObjectURL(blob);
+
+const a =
+document.createElement("a");
+
+a.href = url;
+
+a.download =
+"usuarios.json";
+
+a.click();
+
+URL.revokeObjectURL(url);
+
+}catch(error){
+
+alert(
+"Error al generar JSON: " +
+error.message
+);
+
+}
+
+}
+
 </script>
 
 <!-- BOTON ADMIN -->
@@ -848,13 +912,18 @@ Entrar
 
 <div id="usuariosAdmin" style="display:none;">
 
-<h3>👥 Usuarios</h3>
-
-<div id="listaUsuarios">
-Cargando...
-</div>
-
-</div>
+    <h3>👥 Usuarios</h3>
+    
+    <button onclick="descargarJSON()"
+    style="background:#2196f3;">
+    📥 Descargar JSON
+    </button>
+    
+    <div id="listaUsuarios">
+    Cargando...
+    </div>
+    
+    </div>
 
 <button
 onclick="cerrarPanelAdmin()"
