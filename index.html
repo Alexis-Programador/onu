@@ -394,7 +394,9 @@ from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
 getFirestore,
 doc,
-setDoc
+setDoc,
+collection,
+getDocs
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -480,7 +482,17 @@ edad:Number(edad),
 genero,
 correo:email,
 uid:userCred.user.uid,
-fechaRegistro:new Date()
+fechaRegistro:new Date().toLocaleString(
+"es-MX",
+{
+year:"numeric",
+month:"2-digit",
+day:"2-digit",
+hour:"2-digit",
+minute:"2-digit",
+second:"2-digit"
+}
+)
 }
 );
 
@@ -620,8 +632,227 @@ el.style.color="#ff5252";
 }
 }
 
+/* ==========================
+PANEL ADMIN
+========================== */
+
+window.abrirPanelAdmin=()=>{
+
+const panel =
+document.getElementById(
+"panelAdmin"
+);
+
+if(panel.style.right==="0px"){
+
+panel.style.right="-420px";
+
+}else{
+
+panel.style.right="0";
+
+}
+
+}
+window.cerrarPanelAdmin=()=>{
+
+document.getElementById(
+"panelAdmin"
+).style.right="-420px";
+
+document.getElementById(
+"passAdmin"
+).value="";
+
+document.getElementById(
+"loginAdmin"
+).style.display="block";
+
+document.getElementById(
+"usuariosAdmin"
+).style.display="none";
+
+}
+
+/* ==========================
+LOGIN ADMIN
+========================== */
+
+window.verificarAdmin=
+async()=>{
+
+const pass=
+document.getElementById(
+"passAdmin"
+).value;
+
+if(pass!=="admin123"){
+
+alert(
+"❌ Contraseña incorrecta"
+);
+
+return;
+}
+
+document.getElementById(
+"loginAdmin"
+).style.display="none";
+
+document.getElementById(
+"usuariosAdmin"
+).style.display="block";
+
+const contenedor=
+document.getElementById(
+"listaUsuarios"
+);
+
+contenedor.innerHTML=
+"⏳ Cargando usuarios...";
+
+try{
+
+const querySnapshot=
+await getDocs(
+collection(
+db,
+"usuarios"
+)
+);
+
+let html="";
+
+querySnapshot.forEach((doc)=>{
+
+const user=
+doc.data();
+
+html+=`
+
+<div style="
+background:rgba(255,255,255,.1);
+padding:10px;
+margin-bottom:10px;
+border-radius:10px;
+">
+
+<p><b>👤 Nombre:</b>
+${user.nombre || ""}</p>
+
+<p><b>📛 Apellido:</b>
+${user.apellido || ""}</p>
+
+<p><b>📧 Correo:</b>
+${user.correo || ""}</p>
+
+<p><b>🆔 UID:</b>
+${user.uid || ""}</p>
+
+<p><b>🎂 Edad:</b>
+${user.edad || ""}</p>
+
+<p><b>⚧ Género:</b>
+${user.genero || ""}</p>
+
+<p><b>🕒 Fecha de creación:</b>
+${user.fechaRegistro || "No disponible"}</p>
+
+</div>
+
+`;
+
+});
+
+contenedor.innerHTML=
+html || "No hay usuarios";
+
+}catch(error){
+
+console.error(error);
+
+contenedor.innerHTML=
+"❌ Error al cargar usuarios";
+
+}
+
+}
+
 </script>
+
+<!-- BOTON ADMIN -->
+<button id="btnAdmin"
+onclick="abrirPanelAdmin()"
+style="
+position:fixed;
+bottom:20px;
+right:20px;
+width:60px;
+height:60px;
+border-radius:50%;
+font-size:25px;
+z-index:9999;
+box-shadow:0 4px 10px rgba(0,0,0,.4);
+">
+⚙️
+</button>
+
+<!-- PANEL ADMIN -->
+<div id="panelAdmin"
+style="
+position:fixed;
+bottom:0;
+right:-420px;
+width:380px;
+height:500px;
+background:rgba(0,0,0,.95);
+color:white;
+padding:20px;
+transition:.4s;
+z-index:9998;
+overflow:auto;
+border-radius:20px 0 0 0;
+">
+
+<h2>🔐 Panel Admin</h2>
+
+<div id="loginAdmin">
+
+<input
+type="password"
+id="passAdmin"
+placeholder="Contraseña"
+style="
+width:100%;
+padding:12px;
+margin-top:10px;
+border:none;
+border-radius:8px;
+">
+
+<button onclick="verificarAdmin()">
+Entrar
+</button>
+
+</div>
+
+<div id="usuariosAdmin" style="display:none;">
+
+<h3>👥 Usuarios</h3>
+
+<div id="listaUsuarios">
+Cargando...
+</div>
+
+</div>
+
+<button
+onclick="cerrarPanelAdmin()"
+style="background:red;">
+Cerrar
+</button>
+
+</div>
 
 </body>
 </html>
-
