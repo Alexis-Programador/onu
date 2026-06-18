@@ -396,7 +396,7 @@ getFirestore,
 doc,
 setDoc,
 collection,
-getDocs
+onSnapshot
 }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -414,6 +414,8 @@ appId: "1:329465558346:web:0f7667ed31a03c0589fdb3"
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+
+let listenerUsuarios = null;
 
 window.mostrarRegistro=()=>{
 document.getElementById("loginBox").style.display="none";
@@ -713,22 +715,21 @@ contenedor.innerHTML=
 
 try{
 
-const querySnapshot=
-await getDocs(
-collection(
-db,
-"usuarios"
-)
-);
+    if(listenerUsuarios){
+listenerUsuarios();
+}
+
+listenerUsuarios = onSnapshot(
+collection(db,"usuarios"),
+(snapshot)=>{
 
 let html="";
 
-querySnapshot.forEach((doc)=>{
+snapshot.forEach((doc)=>{
 
-const user=
-doc.data();
+const user = doc.data();
 
-html+=`
+html += `
 
 <div style="
 background:rgba(255,255,255,.1);
@@ -746,17 +747,14 @@ ${user.apellido || ""}</p>
 <p><b>📧 Correo:</b>
 ${user.correo || ""}</p>
 
-<p><b>🆔 UID:</b>
-${user.uid || ""}</p>
-
 <p><b>🎂 Edad:</b>
 ${user.edad || ""}</p>
 
 <p><b>⚧ Género:</b>
 ${user.genero || ""}</p>
 
-<p><b>🕒 Fecha de creación:</b>
-${user.fechaRegistro || "No disponible"}</p>
+<p><b>🕒 Creación:</b>
+${user.fechaRegistro || ""}</p>
 
 </div>
 
@@ -764,8 +762,20 @@ ${user.fechaRegistro || "No disponible"}</p>
 
 });
 
-contenedor.innerHTML=
+contenedor.innerHTML =
 html || "No hay usuarios";
+
+},
+(error)=>{
+
+console.error(error);
+
+contenedor.innerHTML =
+"❌ " + error.message;
+
+}
+);
+
 
 }catch(error){
 
